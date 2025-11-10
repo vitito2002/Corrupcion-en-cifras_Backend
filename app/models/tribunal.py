@@ -1,0 +1,2 @@
+# Modelo SQLAlchemy para Tribunal
+
