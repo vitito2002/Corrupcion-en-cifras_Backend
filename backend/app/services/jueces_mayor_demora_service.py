@@ -5,6 +5,7 @@ from app.schemas.jueces_mayor_demora_schema import (
     DatosGraficoJuecesMayorDemora,
     JuezDemoraItem
 )
+from app.utils.text_formatter import formatear_texto
 
 
 class JuecesMayorDemoraService:
@@ -48,8 +49,12 @@ class JuecesMayorDemoraService:
         jueces_items = []
         
         for juez_data in jueces_data:
+            # Formatear nombres de juez y tribunal
+            juez_formateado = formatear_texto(juez_data['juez_nombre'])
+            tribunal_formateado = formatear_texto(juez_data['tribunal_nombre'])
+            
             # Crear label combinando juez y tribunal
-            label = f"{juez_data['juez_nombre']} - {juez_data['tribunal_nombre']}"
+            label = f"{juez_formateado} - {tribunal_formateado}"
             labels.append(label)
             
             demoras.append(juez_data['demora_promedio_dias'])
@@ -57,8 +62,8 @@ class JuecesMayorDemoraService:
             
             # Crear item completo
             jueces_items.append(JuezDemoraItem(
-                juez_nombre=juez_data['juez_nombre'],
-                tribunal_nombre=juez_data['tribunal_nombre'],
+                juez_nombre=juez_formateado,
+                tribunal_nombre=tribunal_formateado,
                 demora_promedio_dias=juez_data['demora_promedio_dias'],
                 cantidad_expedientes=juez_data['cantidad_expedientes'],
                 label=label

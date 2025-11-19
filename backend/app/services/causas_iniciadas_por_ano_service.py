@@ -24,43 +24,57 @@ class CausasIniciadasPorAnoService:
     
     def get_datos_grafico(self) -> CausasIniciadasPorAnoResponse:
         """
-        Obtiene datos de causas iniciadas por año listos para graficar.
+        Obtiene datos de causas iniciadas por año listos para graficar, separadas por estado.
         
         Returns:
             CausasIniciadasPorAnoResponse con datos procesados listos para el frontend
             
         El formato de respuesta incluye:
         - labels: Lista de años [2010, 2011, 2012, ...]
-        - data: Lista de cantidad de causas por año [45, 67, 89, ...]
+        - causas_abiertas: Lista de cantidad de causas abiertas por año
+        - causas_terminadas: Lista de cantidad de causas terminadas por año
+        - data: Lista de cantidad total de causas por año (para compatibilidad)
         - anos: Lista completa con todos los datos de cada año
-        - total_causas: Total de causas en todos los años
+        - totales: Totales de causas abiertas, terminadas y total
         """
         # Obtener datos del repository
         datos_por_ano = self.expediente_repository.count_by_year()
         
         # Procesar datos para el gráfico
         labels = []
+        causas_abiertas = []
+        causas_terminadas = []
         cantidades = []
         anos_items = []
         
-        # Calcular total
+        # Calcular totales
+        total_causas_abiertas = sum(item['cantidad_causas_abiertas'] for item in datos_por_ano)
+        total_causas_terminadas = sum(item['cantidad_causas_terminadas'] for item in datos_por_ano)
         total_causas = sum(item['cantidad_causas'] for item in datos_por_ano)
         
         for item in datos_por_ano:
             labels.append(item['anio'])
+            causas_abiertas.append(item['cantidad_causas_abiertas'])
+            causas_terminadas.append(item['cantidad_causas_terminadas'])
             cantidades.append(item['cantidad_causas'])
             
             # Crear item completo
             anos_items.append(AnioCausaItem(
                 anio=item['anio'],
+                cantidad_causas_abiertas=item['cantidad_causas_abiertas'],
+                cantidad_causas_terminadas=item['cantidad_causas_terminadas'],
                 cantidad_causas=item['cantidad_causas']
             ))
         
         # Preparar datos del gráfico
         datos_grafico = DatosGraficoCausasPorAno(
             labels=labels,
+            causas_abiertas=causas_abiertas,
+            causas_terminadas=causas_terminadas,
             data=cantidades,
             anos=anos_items,
+            total_causas_abiertas=total_causas_abiertas,
+            total_causas_terminadas=total_causas_terminadas,
             total_causas=total_causas
         )
         

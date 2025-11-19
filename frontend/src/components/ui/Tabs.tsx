@@ -36,32 +36,31 @@ interface TabsProps {
  */
 const Tabs = ({ tabs, activeTab, onTabChange, className = '' }: TabsProps) => {
   return (
-    <div className={`border-b border-gray-200 ${className}`}>
-      <nav className="flex space-x-8" aria-label="Tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => !tab.disabled && onTabChange(tab.id)}
-            disabled={tab.disabled}
-            className={`
-              py-4 px-1 border-b-2 font-medium text-sm transition-colors
-              ${
-                activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600'
-                  : tab.disabled
-                  ? 'border-transparent text-gray-400 cursor-not-allowed'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }
-            `}
-            aria-current={activeTab === tab.id ? 'page' : undefined}
-          >
-            <div className="flex items-center gap-2">
-              {tab.icon && <span>{tab.icon}</span>}
-              <span>{tab.label}</span>
-            </div>
-          </button>
-        ))}
-      </nav>
+    <div className={`flex flex-wrap gap-2 ${className}`} role="tablist" aria-label="Analytics Tabs">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => !tab.disabled && onTabChange(tab.id)}
+          disabled={tab.disabled}
+          className={`
+            px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200
+            ${
+              activeTab === tab.id
+                ? 'text-blue-700 bg-blue-100 border border-blue-300 shadow-sm'
+                : tab.disabled
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-gray-500 hover:bg-gray-100 border border-transparent'
+            }
+          `}
+          aria-current={activeTab === tab.id ? 'page' : undefined}
+          role="tab"
+        >
+          <div className="flex items-center gap-2">
+            {tab.icon && <span>{tab.icon}</span>}
+            <span>{tab.label}</span>
+          </div>
+        </button>
+      ))}
     </div>
   );
 };

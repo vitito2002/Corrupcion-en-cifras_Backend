@@ -5,6 +5,7 @@ from app.schemas.causas_por_fiscal_schema import (
     DatosGraficoCausasPorFiscal,
     FiscalCausasItem
 )
+from app.utils.text_formatter import formatear_texto
 
 
 class CausasPorFiscalService:
@@ -54,13 +55,16 @@ class CausasPorFiscalService:
         total_causas = sum(item['total_causas'] for item in fiscales_data)
         
         for item in fiscales_data:
-            labels.append(item['fiscal'])
+            # Formatear el nombre del fiscal
+            fiscal_formateado = formatear_texto(item['fiscal'])
+            
+            labels.append(fiscal_formateado)
             causas_abiertas.append(item['causas_abiertas'])
             causas_terminadas.append(item['causas_terminadas'])
             
             # Crear item completo
             fiscales_items.append(FiscalCausasItem(
-                fiscal=item['fiscal'],
+                fiscal=fiscal_formateado,
                 causas_abiertas=item['causas_abiertas'],
                 causas_terminadas=item['causas_terminadas'],
                 total_causas=item['total_causas']

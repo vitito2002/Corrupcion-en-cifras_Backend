@@ -5,6 +5,7 @@ from app.schemas.causas_por_fuero_schema import (
     DatosGraficoCausasPorFuero,
     FueroCausaItem
 )
+from app.utils.text_formatter import formatear_texto
 
 
 class CausasPorFueroService:
@@ -24,43 +25,60 @@ class CausasPorFueroService:
     
     def get_datos_grafico(self) -> CausasPorFueroResponse:
         """
-        Obtiene datos agregados de causas por fuero listos para graficar.
+        Obtiene datos agregados de causas por fuero listos para graficar, separadas por estado.
         
         Returns:
             CausasPorFueroResponse con datos procesados listos para el frontend
             
         El formato de respuesta incluye:
         - labels: Lista de nombres de fueros
-        - data: Lista de cantidad de causas por fuero
-        - fueros: Lista de objetos con fuero y cantidad
-        - total_causas: Total general de causas
+        - causas_abiertas: Lista de cantidad de causas abiertas por fuero
+        - causas_terminadas: Lista de cantidad de causas terminadas por fuero
+        - data: Lista de cantidad total de causas por fuero (para compatibilidad)
+        - fueros: Lista de objetos con fuero y cantidades
+        - totales: Totales generales de causas abiertas, terminadas y total
         """
         # Obtener datos del repository
         fueros_data = self.expediente_repository.get_causas_por_fuero()
         
         # Procesar datos para el gráfico
         labels = []
+        causas_abiertas = []
+        causas_terminadas = []
         data = []
         fueros_items = []
         
-        # Calcular total
+        # Calcular totales
+        total_causas_abiertas = sum(item['cantidad_causas_abiertas'] for item in fueros_data)
+        total_causas_terminadas = sum(item['cantidad_causas_terminadas'] for item in fueros_data)
         total_causas = sum(item['cantidad_causas'] for item in fueros_data)
         
         for item in fueros_data:
-            labels.append(item['fuero'])
+            # Formatear el nombre del fuero
+            fuero_formateado = formatear_texto(item['fuero'])
+            
+            labels.append(fuero_formateado)
+            causas_abiertas.append(item['cantidad_causas_abiertas'])
+            causas_terminadas.append(item['cantidad_causas_terminadas'])
             data.append(item['cantidad_causas'])
             
             # Crear item completo
             fueros_items.append(FueroCausaItem(
-                fuero=item['fuero'],
+                fuero=fuero_formateado,
+                cantidad_causas_abiertas=item['cantidad_causas_abiertas'],
+                cantidad_causas_terminadas=item['cantidad_causas_terminadas'],
                 cantidad_causas=item['cantidad_causas']
             ))
         
         # Preparar datos del gráfico
         datos_grafico = DatosGraficoCausasPorFuero(
             labels=labels,
+            causas_abiertas=causas_abiertas,
+            causas_terminadas=causas_terminadas,
             data=data,
             fueros=fueros_items,
+            total_causas_abiertas=total_causas_abiertas,
+            total_causas_terminadas=total_causas_terminadas,
             total_causas=total_causas
         )
         

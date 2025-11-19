@@ -9,6 +9,8 @@ import type {
   PersonasQueMasDenunciaronResponse,
   CausasPorFiscalResponse,
   DuracionInstruccionResponse,
+  CausasPorFueroResponse,
+  DuracionOutliersResponse,
 } from '@/types/analytics';
 
 /**
@@ -146,6 +148,35 @@ export async function fetchDuracionInstruccion(
   const response = await get<DuracionInstruccionResponse>(endpoint);
   if (response.error || !response.data) {
     console.error('Error fetching duracion instruccion:', response.error);
+    return null;
+  }
+  return response.data;
+}
+
+/**
+ * Obtiene las causas por fuero judicial
+ */
+export async function fetchCausasPorFuero(): Promise<CausasPorFueroResponse | null> {
+  const response = await get<CausasPorFueroResponse>('/analytics/causas-por-fuero');
+  if (response.error || !response.data) {
+    console.error('Error fetching causas por fuero:', response.error);
+    return null;
+  }
+  return response.data;
+}
+
+/**
+ * Obtiene los outliers de duración de instrucción (top más largos y más cortos)
+ */
+export async function fetchDuracionOutliers(
+  limit?: number
+): Promise<DuracionOutliersResponse | null> {
+  const endpoint = limit 
+    ? `/analytics/duracion-outliers?limit=${limit}`
+    : '/analytics/duracion-outliers';
+  const response = await get<DuracionOutliersResponse>(endpoint);
+  if (response.error || !response.data) {
+    console.error('Error fetching duracion outliers:', response.error);
     return null;
   }
   return response.data;

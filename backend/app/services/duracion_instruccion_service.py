@@ -41,7 +41,10 @@ class DuracionInstruccionService:
         - duracion_minima_dias: Duración mínima en días
         - total_causas: Total de causas analizadas
         """
-        # Obtener datos del repository
+        # Obtener estadísticas globales (de TODAS las causas, no solo las limitadas)
+        estadisticas_globales = self.expediente_repository.get_duracion_promedio_global()
+        
+        # Obtener datos del repository para el gráfico (limitadas por limit)
         causas_data = self.expediente_repository.get_duracion_instruccion(limit=limit)
         
         if not causas_data:
@@ -51,10 +54,10 @@ class DuracionInstruccionService:
                     labels=[],
                     data=[],
                     causas=[],
-                    duracion_promedio_dias=0.0,
-                    duracion_maxima_dias=0,
-                    duracion_minima_dias=0,
-                    total_causas=0
+                    duracion_promedio_dias=estadisticas_globales["duracion_promedio_dias"],
+                    duracion_maxima_dias=estadisticas_globales["duracion_maxima_dias"],
+                    duracion_minima_dias=estadisticas_globales["duracion_minima_dias"],
+                    total_causas=estadisticas_globales["total_causas"]
                 )
             )
         
@@ -62,12 +65,6 @@ class DuracionInstruccionService:
         labels = []
         duraciones = []
         causas_items = []
-        
-        # Calcular estadísticas
-        duraciones_list = [causa['duracion_dias'] for causa in causas_data]
-        duracion_promedio = sum(duraciones_list) / len(duraciones_list) if duraciones_list else 0.0
-        duracion_maxima = max(duraciones_list) if duraciones_list else 0
-        duracion_minima = min(duraciones_list) if duraciones_list else 0
         
         for causa in causas_data:
             # Usar carátula si está disponible, sino número de expediente
@@ -91,14 +88,16 @@ class DuracionInstruccionService:
             ))
         
         # Preparar datos del gráfico
+        # Usar estadísticas globales para el promedio, máximo y mínimo
+        # El total_causas es el total de todas las causas analizadas, no solo las limitadas
         datos_grafico = DatosGraficoDuracionInstruccion(
             labels=labels,
             data=duraciones,
             causas=causas_items,
-            duracion_promedio_dias=round(duracion_promedio, 2),
-            duracion_maxima_dias=duracion_maxima,
-            duracion_minima_dias=duracion_minima,
-            total_causas=len(causas_data)
+            duracion_promedio_dias=round(estadisticas_globales["duracion_promedio_dias"], 2),
+            duracion_maxima_dias=estadisticas_globales["duracion_maxima_dias"],
+            duracion_minima_dias=estadisticas_globales["duracion_minima_dias"],
+            total_causas=estadisticas_globales["total_causas"]
         )
         
         return DuracionInstruccionResponse(datos_grafico=datos_grafico)

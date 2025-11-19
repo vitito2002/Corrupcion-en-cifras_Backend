@@ -7,5 +7,8 @@ export { default as CausasEnTramitePorJuzgadoChart } from './CausasEnTramitePorJ
 export { default as PersonasMasDenunciadasChart } from './PersonasMasDenunciadasChart';
 export { default as PersonasQueMasDenunciaronChart } from './PersonasQueMasDenunciaronChart';
 export { default as CausasPorFiscalChart } from './CausasPorFiscalChart';
+export { default as CausasPorFueroChart } from './CausasPorFueroChart';
+export { default as DuracionOutliersChart } from './DuracionOutliersChart';
 export { default as DuracionInstruccionChart } from './DuracionInstruccionChart';
+export { default as DuracionTimeline } from './DuracionTimeline';
 

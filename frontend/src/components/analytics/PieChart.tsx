@@ -8,26 +8,31 @@ interface PieChartProps {
 }
 
 const PieChart = ({ labels, data, title }: PieChartProps) => {
+  // Paleta de colores Gobierno Moderno / Transparencia
+  const colors = [
+    'rgba(30, 58, 138, 0.7)',   // Azul oscuro
+    'rgba(59, 130, 246, 0.7)',  // Azul principal
+    'rgba(147, 197, 253, 0.7)', // Azul suave
+    'rgba(16, 185, 129, 0.7)',  // Verde acento
+    'rgba(229, 231, 235, 0.7)', // Gris medio
+  ];
+  
+  const borderColors = [
+    'rgba(30, 58, 138, 1)',
+    'rgba(59, 130, 246, 1)',
+    'rgba(147, 197, 253, 1)',
+    'rgba(16, 185, 129, 1)',
+    'rgba(229, 231, 235, 1)',
+  ];
+
   const chartData = {
     labels,
     datasets: [
       {
         data,
-        backgroundColor: [
-          'rgba(239, 68, 68, 0.6)',
-          'rgba(59, 130, 246, 0.6)',
-          'rgba(34, 197, 94, 0.6)',
-          'rgba(251, 191, 36, 0.6)',
-          'rgba(168, 85, 247, 0.6)',
-        ],
-        borderColor: [
-          'rgba(239, 68, 68, 1)',
-          'rgba(59, 130, 246, 1)',
-          'rgba(34, 197, 94, 1)',
-          'rgba(251, 191, 36, 1)',
-          'rgba(168, 85, 247, 1)',
-        ],
-        borderWidth: 1,
+        backgroundColor: colors.slice(0, data.length),
+        borderColor: borderColors.slice(0, data.length),
+        borderWidth: 1.5,
       },
     ],
   };
@@ -38,17 +43,32 @@ const PieChart = ({ labels, data, title }: PieChartProps) => {
     plugins: {
       legend: {
         position: 'right' as const,
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold' as const,
+          },
+          padding: 15,
+        },
       },
       tooltip: {
         enabled: true,
+        titleFont: {
+          size: 14,
+          weight: 'bold' as const,
+        },
+        bodyFont: {
+          size: 13,
+          weight: 'normal' as const,
+        },
       },
     },
   };
 
   return (
-    <div className="p-4">
-      <h3 className="text-xl font-semibold mb-3">{title}</h3>
-      <div className="h-64">
+    <div className="p-2">
+      <h3 className="text-lg font-semibold mb-4 text-[#1E3A8A] tracking-tight">{title}</h3>
+      <div className="h-96">
         <Pie data={chartData} options={options} />
       </div>
     </div>

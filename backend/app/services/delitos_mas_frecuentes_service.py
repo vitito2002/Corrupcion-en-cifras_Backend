@@ -1,3 +1,4 @@
+import re
 from typing import Generator
 from app.repositories.expediente_repository import ExpedienteRepository
 from app.schemas.delitos_mas_frecuentes_schema import (
@@ -5,6 +6,7 @@ from app.schemas.delitos_mas_frecuentes_schema import (
     DatosGraficoDelitosMasFrecuentes,
     DelitoItem
 )
+from app.utils.text_formatter import formatear_texto
 
 
 class DelitosMasFrecuentesService:
@@ -22,9 +24,28 @@ class DelitosMasFrecuentesService:
         """
         self.expediente_repository = expediente_repository
     
+    def _limpiar_nombre_delito(self, nombre: str) -> str:
+        """
+        Limpia el nombre del delito eliminando paréntesis y su contenido.
+        Maneja tanto paréntesis cerrados como sin cerrar.
+        
+        Args:
+            nombre: Nombre del delito con posibles paréntesis
+            
+        Returns:
+            Nombre del delito sin paréntesis ni su contenido
+        """
+        # Primero eliminar paréntesis cerrados y su contenido: (ART.248)
+        nombre_limpio = re.sub(r'\([^)]*\)', '', nombre)
+        # Luego eliminar paréntesis sin cerrar y todo lo que sigue: (ART 268
+        nombre_limpio = re.sub(r'\([^)]*$', '', nombre_limpio)
+        # Limpiar espacios múltiples y espacios al inicio/final
+        nombre_limpio = ' '.join(nombre_limpio.split())
+        return nombre_limpio.strip()
+    
     def get_datos_grafico(self, limit: int = 10) -> DelitosMasFrecuentesResponse:
         """
-        Obtiene datos de delitos más frecuentes listos para graficar.
+        Obtiene datos de delitos más frecuentes listos para graficar, separados por estado.
         
         Args:
             limit: Número máximo de delitos a retornar (default: 10)
@@ -34,36 +55,55 @@ class DelitosMasFrecuentesService:
             
         El formato de respuesta incluye:
         - labels: Lista de nombres de delitos
-        - data: Lista de cantidad de causas por delito
+        - causas_abiertas: Lista de cantidad de causas abiertas por delito
+        - causas_terminadas: Lista de cantidad de causas terminadas por delito
+        - data: Lista de cantidad total de causas por delito (para compatibilidad)
         - delitos: Lista completa con todos los datos de cada delito
-        - total_causas: Total de causas en todos los delitos
+        - totales: Totales de causas abiertas, terminadas y total
         """
         # Obtener datos del repository
         delitos_data = self.expediente_repository.get_delitos_mas_frecuentes(limit=limit)
         
         # Procesar datos para el gráfico
         labels = []
+        causas_abiertas = []
+        causas_terminadas = []
         cantidades = []
         delitos_items = []
         
-        # Calcular total
+        # Calcular totales
+        total_causas_abiertas = sum(item['cantidad_causas_abiertas'] for item in delitos_data)
+        total_causas_terminadas = sum(item['cantidad_causas_terminadas'] for item in delitos_data)
         total_causas = sum(item['cantidad_causas'] for item in delitos_data)
         
         for i, delito_data in enumerate(delitos_data):
-            labels.append(delito_data['delito'])
+            # Limpiar el nombre del delito eliminando paréntesis y su contenido
+            nombre_limpio = self._limpiar_nombre_delito(delito_data['delito'])
+            # Formatear el texto (Title Case, excepto siglas)
+            nombre_formateado = formatear_texto(nombre_limpio)
+            
+            labels.append(nombre_formateado)
+            causas_abiertas.append(delito_data['cantidad_causas_abiertas'])
+            causas_terminadas.append(delito_data['cantidad_causas_terminadas'])
             cantidades.append(delito_data['cantidad_causas'])
             
-            # Crear item completo
+            # Crear item completo con el nombre formateado
             delitos_items.append(DelitoItem(
-                delito=delito_data['delito'],
+                delito=nombre_formateado,
+                cantidad_causas_abiertas=delito_data['cantidad_causas_abiertas'],
+                cantidad_causas_terminadas=delito_data['cantidad_causas_terminadas'],
                 cantidad_causas=delito_data['cantidad_causas']
             ))
         
         # Preparar datos del gráfico
         datos_grafico = DatosGraficoDelitosMasFrecuentes(
             labels=labels,
+            causas_abiertas=causas_abiertas,
+            causas_terminadas=causas_terminadas,
             data=cantidades,
             delitos=delitos_items,
+            total_causas_abiertas=total_causas_abiertas,
+            total_causas_terminadas=total_causas_terminadas,
             total_causas=total_causas
         )
         

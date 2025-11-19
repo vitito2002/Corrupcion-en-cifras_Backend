@@ -5,6 +5,7 @@ from app.schemas.personas_que_mas_denunciaron_schema import (
     DatosGraficoPersonasQueMasDenunciaron,
     PersonaDenuncianteItem
 )
+from app.utils.text_formatter import formatear_texto
 
 
 class PersonasQueMasDenunciaronService:
@@ -50,13 +51,29 @@ class PersonasQueMasDenunciaronService:
         total_denuncias = sum(item['cantidad_denuncias'] for item in personas_data)
         
         for item in personas_data:
-            labels.append(item['persona'])
-            data.append(item['cantidad_denuncias'])
+            # Filtrar valores null, None o vacíos
+            if not item.get('persona') or not item.get('cantidad_denuncias'):
+                continue
+            
+            # Formatear el nombre de la persona
+            persona_formateada = formatear_texto(item['persona'])
+            
+            # Validar que el nombre formateado no esté vacío
+            if not persona_formateada or persona_formateada.strip() == '':
+                continue
+            
+            # Validar que cantidad_denuncias sea un número válido
+            cantidad = item['cantidad_denuncias']
+            if not isinstance(cantidad, (int, float)) or cantidad <= 0:
+                continue
+            
+            labels.append(persona_formateada)
+            data.append(int(cantidad))
             
             # Crear item completo
             personas_items.append(PersonaDenuncianteItem(
-                persona=item['persona'],
-                cantidad_denuncias=item['cantidad_denuncias']
+                persona=persona_formateada,
+                cantidad_denuncias=int(cantidad)
             ))
         
         # Preparar datos del gráfico

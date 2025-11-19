@@ -7,6 +7,7 @@ from app.routers import (
     delitos_mas_frecuentes_router,
     causas_en_tramite_por_juzgado_router,
     duracion_instruccion_router,
+    duracion_outliers_router,
     exportacion_router,
     causas_por_fuero_router,
     personas_mas_denunciadas_router,
@@ -37,6 +38,7 @@ app.include_router(causas_iniciadas_por_ano_router.router)
 app.include_router(delitos_mas_frecuentes_router.router)
 app.include_router(causas_en_tramite_por_juzgado_router.router)
 app.include_router(duracion_instruccion_router.router)
+app.include_router(duracion_outliers_router.router)
 app.include_router(exportacion_router.router)
 app.include_router(causas_por_fuero_router.router)
 app.include_router(personas_mas_denunciadas_router.router)
