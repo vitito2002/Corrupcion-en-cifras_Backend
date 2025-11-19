@@ -1,25 +1,25 @@
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { fetchDelitosMasFrecuentes } from '@/services/analytics';
-import type { DelitosMasFrecuentesResponse } from '@/types/analytics';
+import { fetchDuracionInstruccion } from '@/services/analytics';
+import type { DuracionInstruccionResponse } from '@/types/analytics';
 import BarChart from '@/components/analytics/BarChart';
 
-interface DelitosMasFrecuentesChartProps {
+interface DuracionInstruccionChartProps {
   title?: string;
   limit?: number;
   className?: string;
 }
 
 /**
- * Componente completo para el gráfico de delitos más frecuentes
+ * Componente completo para el gráfico de duración de instrucción
  */
-const DelitosMasFrecuentesChart = ({ 
-  title = 'Delitos Más Frecuentes',
-  limit = 10,
+const DuracionInstruccionChart = ({ 
+  title = 'Duración de instrucción (promedio en días)',
+  limit,
   className = '' 
-}: DelitosMasFrecuentesChartProps) => {
-  const { data, loading, error } = useAnalytics<DelitosMasFrecuentesResponse>(
-    () => fetchDelitosMasFrecuentes(limit),
-    [limit]
+}: DuracionInstruccionChartProps) => {
+  const { data, loading, error } = useAnalytics<DuracionInstruccionResponse>(
+    () => fetchDuracionInstruccion(limit),
+    limit !== undefined ? [limit] : []
   );
 
   if (loading) {
@@ -47,7 +47,7 @@ const DelitosMasFrecuentesChart = ({
     );
   }
 
-  if (!data?.datos_grafico) {
+  if (!data?.datos_grafico || data.datos_grafico.labels.length === 0) {
     return (
       <div className={`bg-white shadow rounded-lg p-6 ${className}`}>
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
@@ -56,38 +56,17 @@ const DelitosMasFrecuentesChart = ({
     );
   }
 
-  // Opciones personalizadas para gráfico horizontal
-  const horizontalOptions = {
-    indexAxis: 'y' as const,
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: true },
-    },
-    scales: {
-      x: {
-        beginAtZero: true,
-      },
-      y: {
-        ticks: {
-          autoSkip: false,
-          padding: 10,
-        },
-      },
-    },
-  };
-
   return (
     <div className={`bg-white shadow rounded-lg p-6 ${className}`}>
       <h2 className="text-2xl font-bold mb-4">{title}</h2>
       <BarChart
         labels={data.datos_grafico.labels}
         data={data.datos_grafico.data}
-        title="Top delitos por cantidad de causas"
-        options={horizontalOptions}
+        title="Duración en días"
       />
     </div>
   );
 };
 
-export default DelitosMasFrecuentesChart;
+export default DuracionInstruccionChart;
 

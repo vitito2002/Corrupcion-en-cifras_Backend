@@ -1,13 +1,15 @@
 import '@/config/chart';
 import { Bar } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 
 interface BarChartProps {
   labels: string[];
   data: number[];
   title: string;
+  options?: ChartOptions<'bar'>;
 }
 
-const BarChart = ({ labels, data, title }: BarChartProps) => {
+const BarChart = ({ labels, data, title, options: customOptions }: BarChartProps) => {
   const chartData = {
     labels,
     datasets: [
@@ -21,7 +23,7 @@ const BarChart = ({ labels, data, title }: BarChartProps) => {
     ],
   };
 
-  const options = {
+  const defaultOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -38,6 +40,10 @@ const BarChart = ({ labels, data, title }: BarChartProps) => {
       },
     },
   };
+
+  const options = customOptions 
+    ? { ...defaultOptions, ...customOptions } 
+    : defaultOptions;
 
   return (
     <div className="p-4">

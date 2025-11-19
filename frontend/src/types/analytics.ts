@@ -82,6 +82,23 @@ export interface PersonasQueMasDenunciaronResponse {
 export interface CausasPorFiscalResponse {
   datos_grafico: {
     labels: string[];
+    causas_abiertas: number[];
+    causas_terminadas: number[];
+    fiscales: Array<{
+      fiscal: string;
+      causas_abiertas: number;
+      causas_terminadas: number;
+      total_causas: number;
+    }>;
+    total_causas_abiertas: number;
+    total_causas_terminadas: number;
+    total_causas: number;
+  };
+}
+
+export interface DuracionInstruccionResponse {
+  datos_grafico: {
+    labels: string[];
     data: number[];
   };
 }
