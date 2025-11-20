@@ -41,6 +41,7 @@ class ParteRepository:
             WHERE LOWER(rp.nombre) = 'denunciado'
               AND p.nombre_razon_social IS NOT NULL
               AND p.nombre_razon_social != ''
+              AND UPPER(TRIM(p.nombre_razon_social)) != 'NAN'
             GROUP BY p.nombre_razon_social
             ORDER BY cantidad_causas DESC
             LIMIT :limit
@@ -79,6 +80,7 @@ class ParteRepository:
             WHERE LOWER(rp.nombre) IN ('denunciante', 'querellante')
               AND p.nombre_razon_social IS NOT NULL
               AND p.nombre_razon_social != ''
+              AND UPPER(TRIM(p.nombre_razon_social)) != 'NAN'
             GROUP BY p.nombre_razon_social
             ORDER BY cantidad_denuncias DESC
             LIMIT :limit

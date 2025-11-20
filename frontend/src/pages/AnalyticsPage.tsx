@@ -17,7 +17,7 @@ import { downloadBaseZip, fetchCasosPorEstado, fetchDuracionInstruccion } from '
 import { useAnalytics } from '@/hooks/useAnalytics';
 import type { CasosPorEstadoResponse, DuracionInstruccionResponse } from '@/types/analytics';
 
-type TabId = 'metodologia' | 'general' | 'personas' | 'fiscales' | 'juzgados' | 'otros' | 'exportacion';
+type TabId = 'general' | 'personas' | 'fiscales' | 'juzgados' | 'otros' | 'exportacion';
 
 /**
  * Componente para la sección de KPIs
@@ -83,7 +83,6 @@ const AnalyticsPage = () => {
     { id: 'juzgados', label: 'Juzgados' },
     { id: 'otros', label: 'Otros' },
     { id: 'exportacion', label: 'Exportación' },
-    { id: 'metodologia', label: 'Metodología' },
   ];
 
   return (
@@ -109,21 +108,6 @@ const AnalyticsPage = () => {
 
         {/* Contenido de las Pestañas */}
         <div className="mt-8 space-y-12">
-          {/* Pestaña: Metodología */}
-          {activeTab === 'metodologia' && (
-            <div className="space-y-6 fade-in">
-              <div className="bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg transition-shadow">
-                <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">Metodología</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  Aquí irá el texto explicando la metodología, el proceso de scraping, 
-                  normalización de datos, construcción de la base, y cómo se generan 
-                  las visualizaciones. Esto debe ser solo texto estático, 
-                  sin componentes adicionales.
-                </p>
-              </div>
-            </div>
-          )}
-
           {/* Pestaña: General */}
           {activeTab === 'general' && (
             <div className="space-y-12 fade-in">

@@ -56,6 +56,26 @@ const JuecesMayorDemoraChart = ({
     );
   }
 
+  // Opciones personalizadas para gráfico horizontal
+  const horizontalOptions = {
+    indexAxis: 'y' as const,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+      y: {
+        ticks: {
+          autoSkip: false,
+          padding: 10,
+        },
+      },
+    },
+  };
+
   return (
     <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
       <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
@@ -63,6 +83,7 @@ const JuecesMayorDemoraChart = ({
         labels={data.datos_grafico.labels}
         data={data.datos_grafico.data}
         title="Demora promedio en días por juez"
+        options={horizontalOptions}
       />
     </div>
   );

@@ -10,14 +10,32 @@ interface BarChartProps {
 }
 
 const BarChart = ({ labels, data, title, options: customOptions }: BarChartProps) => {
+  // Encontrar el índice del valor máximo
+  const maxIndex = data.length > 0 
+    ? data.reduce((maxIdx, current, idx, arr) => (current > arr[maxIdx] ? idx : maxIdx), 0)
+    : -1;
+
+  // Generar colores: naranja para el máximo, azul para el resto
+  const backgroundColor = data.map((_, index) => 
+    index === maxIndex 
+      ? 'rgba(249, 115, 22, 0.7)' // Naranja (orange-500)
+      : 'rgba(59, 130, 246, 0.7)' // Azul
+  );
+
+  const borderColor = data.map((_, index) => 
+    index === maxIndex 
+      ? 'rgba(234, 88, 12, 1)' // Naranja más oscuro para el borde
+      : 'rgba(30, 58, 138, 1)' // Azul oscuro
+  );
+
   const chartData = {
     labels,
     datasets: [
       {
         label: 'Cantidad',
         data,
-        backgroundColor: 'rgba(59, 130, 246, 0.7)',
-        borderColor: 'rgba(30, 58, 138, 1)',
+        backgroundColor,
+        borderColor,
         borderWidth: 1.5,
       },
     ],

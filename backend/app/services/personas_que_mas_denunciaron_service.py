@@ -1,4 +1,5 @@
 from typing import Generator
+import math
 from app.repositories.parte_repository import ParteRepository
 from app.schemas.personas_que_mas_denunciaron_schema import (
     PersonasQueMasDenunciaronResponse,
@@ -55,16 +56,33 @@ class PersonasQueMasDenunciaronService:
             if not item.get('persona') or not item.get('cantidad_denuncias'):
                 continue
             
+            # Filtrar si el nombre es "NaN" (como string)
+            persona_raw = str(item['persona']).strip().upper()
+            if persona_raw == 'NAN' or persona_raw == 'N/A':
+                continue
+            
+            # Validar que cantidad_denuncias sea un número válido y no sea NaN
+            cantidad = item['cantidad_denuncias']
+            if not isinstance(cantidad, (int, float)):
+                continue
+            
+            # Filtrar NaN explícitamente
+            if isinstance(cantidad, float) and math.isnan(cantidad):
+                continue
+            
+            # Filtrar valores <= 0
+            if cantidad <= 0:
+                continue
+            
             # Formatear el nombre de la persona
             persona_formateada = formatear_texto(item['persona'])
             
-            # Validar que el nombre formateado no esté vacío
+            # Validar que el nombre formateado no esté vacío y no sea "NaN"
             if not persona_formateada or persona_formateada.strip() == '':
                 continue
             
-            # Validar que cantidad_denuncias sea un número válido
-            cantidad = item['cantidad_denuncias']
-            if not isinstance(cantidad, (int, float)) or cantidad <= 0:
+            # Filtrar si después de formatear sigue siendo "NaN"
+            if persona_formateada.strip().upper() == 'NAN':
                 continue
             
             labels.append(persona_formateada)

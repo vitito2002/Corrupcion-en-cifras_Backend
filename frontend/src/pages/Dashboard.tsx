@@ -12,7 +12,7 @@ const Dashboard = () => {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 
-            className="text-5xl font-bold tracking-tight text-[#1E3A8A] mb-4"
+            className="text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-[#1E3A8A] mb-4"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
             Corrupción en Cifras

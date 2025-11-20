@@ -188,7 +188,7 @@ export async function fetchDuracionOutliers(
 export async function downloadBaseZip(): Promise<void> {
   try {
     const API_BASE_URL = 'http://localhost:8000';
-    const response = await fetch(`${API_BASE_URL}/analytics/export/zip`, {
+    const response = await fetch(`${API_BASE_URL}/exportacion/descargar-base-de-datos`, {
       method: 'GET',
     });
 

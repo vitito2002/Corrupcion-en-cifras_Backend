@@ -91,11 +91,7 @@ const DelitosMasFrecuentesChart = ({
     );
   }
 
-  const tituloGrafico = estado === 'abiertas'
-    ? 'Top delitos por cantidad de causas abiertas'
-    : estado === 'terminadas'
-    ? 'Top delitos por cantidad de causas terminadas'
-    : 'Top delitos por cantidad de causas';
+  const tituloGrafico = 'Los delitos que aparecen con mayor frecuencia en las causas analizadas.';
 
   // Opciones personalizadas para gráfico horizontal
   const horizontalOptions = {

@@ -12,20 +12,20 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 shadow-sm h-20 flex items-center justify-between px-6 sticky top-0 z-50">
       {/* Logo / Nombre del proyecto */}
       <Link to="/" className="flex items-center">
-        <h1 className="text-xl font-semibold text-[#1E3A8A] tracking-tight">
+        <h1 className="text-2xl font-semibold text-[#1E3A8A] tracking-tight">
           Corrupción en Cifras
         </h1>
       </Link>
 
       {/* Navegación */}
-      <nav className="flex items-center space-x-6">
+      <nav className="flex items-center space-x-8">
         <Link
           to="/"
           className={`
-            text-sm font-medium transition-colors duration-200
+            text-base font-medium transition-colors duration-200
             ${isActive('/')
               ? 'text-[#3B82F6] border-b-2 border-[#3B82F6] pb-1'
               : 'text-gray-600 hover:text-[#3B82F6]'
@@ -37,7 +37,7 @@ const Header = () => {
         <Link
           to="/analytics"
           className={`
-            text-sm font-medium transition-colors duration-200
+            text-base font-medium transition-colors duration-200
             ${isActive('/analytics')
               ? 'text-[#3B82F6] border-b-2 border-[#3B82F6] pb-1'
               : 'text-gray-600 hover:text-[#3B82F6]'
@@ -45,6 +45,18 @@ const Header = () => {
           `}
         >
           Dashboard
+        </Link>
+        <Link
+          to="/metodologia"
+          className={`
+            text-base font-medium transition-colors duration-200
+            ${isActive('/metodologia')
+              ? 'text-[#3B82F6] border-b-2 border-[#3B82F6] pb-1'
+              : 'text-gray-600 hover:text-[#3B82F6]'
+            }
+          `}
+        >
+          Metodología
         </Link>
       </nav>
     </header>

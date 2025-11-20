@@ -99,6 +99,26 @@ const CausasPorFiscalChart = ({
     ? 'Cantidad de causas terminadas por fiscal'
     : 'Cantidad total de causas por fiscal';
 
+  // Opciones personalizadas para gráfico horizontal
+  const horizontalOptions = {
+    indexAxis: 'y' as const,
+    plugins: {
+      legend: { display: false },
+      tooltip: { enabled: true },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+      y: {
+        ticks: {
+          autoSkip: false,
+          padding: 10,
+        },
+      },
+    },
+  };
+
   return (
     <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
       <div className="flex items-center justify-between mb-4">
@@ -110,6 +130,7 @@ const CausasPorFiscalChart = ({
         labels={labelsOrdenados}
         data={datosOrdenados}
         title={tituloGrafico}
+        options={horizontalOptions}
       />
     </div>
   );
