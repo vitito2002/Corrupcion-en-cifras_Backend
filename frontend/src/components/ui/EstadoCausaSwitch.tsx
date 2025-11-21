@@ -23,8 +23,8 @@ const EstadoCausaSwitch = ({ estado, onChange, className = '' }: EstadoCausaSwit
         className={`
           px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200
           ${estado === 'abiertas'
-            ? 'bg-blue-100 text-blue-700 border border-blue-300 shadow-sm'
-            : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-transparent'
+            ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+            : 'bg-soft/20 text-secondary hover:bg-secondary/10 border border-transparent'
           }
         `}
       >
@@ -36,8 +36,8 @@ const EstadoCausaSwitch = ({ estado, onChange, className = '' }: EstadoCausaSwit
         className={`
           px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200
           ${estado === 'terminadas'
-            ? 'bg-blue-100 text-blue-700 border border-blue-300 shadow-sm'
-            : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-transparent'
+            ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+            : 'bg-soft/20 text-secondary hover:bg-secondary/10 border border-transparent'
           }
         `}
       >
@@ -49,8 +49,8 @@ const EstadoCausaSwitch = ({ estado, onChange, className = '' }: EstadoCausaSwit
         className={`
           px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200
           ${estado === 'ambas'
-            ? 'bg-blue-100 text-blue-700 border border-blue-300 shadow-sm'
-            : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-transparent'
+            ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+            : 'bg-soft/20 text-secondary hover:bg-secondary/10 border border-transparent'
           }
         `}
       >

@@ -8,21 +8,22 @@ interface PieChartProps {
 }
 
 const PieChart = ({ labels, data, title }: PieChartProps) => {
-  // Paleta de colores Gobierno Moderno / Transparencia
+  // Nueva paleta de colores: primary, secondary, muted, soft, accent
+  // Convertir hex a rgba: #1B4079, #4D7C8A, #7F9C96, #8FAD88, #CBDF90
   const colors = [
-    'rgba(30, 58, 138, 0.7)',   // Azul oscuro
-    'rgba(59, 130, 246, 0.7)',  // Azul principal
-    'rgba(147, 197, 253, 0.7)', // Azul suave
-    'rgba(16, 185, 129, 0.7)',  // Verde acento
-    'rgba(229, 231, 235, 0.7)', // Gris medio
+    'rgba(27, 64, 121, 0.7)',   // Primary (Yale Blue)
+    'rgba(77, 124, 138, 0.7)',  // Secondary (Air Force Blue)
+    'rgba(127, 156, 150, 0.7)', // Muted (Cambridge Blue)
+    'rgba(143, 173, 136, 0.7)', // Soft (Cambridge Green)
+    'rgba(203, 223, 144, 0.7)', // Accent (Mindaro)
   ];
   
   const borderColors = [
-    'rgba(30, 58, 138, 1)',
-    'rgba(59, 130, 246, 1)',
-    'rgba(147, 197, 253, 1)',
-    'rgba(16, 185, 129, 1)',
-    'rgba(229, 231, 235, 1)',
+    'rgba(27, 64, 121, 1)',
+    'rgba(77, 124, 138, 1)',
+    'rgba(127, 156, 150, 1)',
+    'rgba(143, 173, 136, 1)',
+    'rgba(203, 223, 144, 1)',
   ];
 
   const chartData = {
@@ -53,6 +54,9 @@ const PieChart = ({ labels, data, title }: PieChartProps) => {
       },
       tooltip: {
         enabled: true,
+        backgroundColor: 'rgba(27, 64, 121, 0.9)', // Primary con opacidad
+        titleColor: '#FFFFFF',
+        bodyColor: '#FFFFFF',
         titleFont: {
           size: 14,
           weight: 'bold' as const,
@@ -61,13 +65,15 @@ const PieChart = ({ labels, data, title }: PieChartProps) => {
           size: 13,
           weight: 'normal' as const,
         },
+        padding: 12,
+        cornerRadius: 8,
       },
     },
   };
 
   return (
     <div className="p-2">
-      <h3 className="text-lg font-semibold mb-4 text-[#1E3A8A] tracking-tight">{title}</h3>
+      <h3 className="text-lg font-semibold mb-4 text-primary tracking-tight">{title}</h3>
       <div className="h-96">
         <Pie data={chartData} options={options} />
       </div>

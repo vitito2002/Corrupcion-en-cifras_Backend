@@ -25,11 +25,11 @@ const DuracionOutliersChart = ({
 
   if (loading) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6] mx-auto mb-2"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
             <p className="text-gray-500 text-sm">Cargando datos...</p>
           </div>
         </div>
@@ -39,8 +39,8 @@ const DuracionOutliersChart = ({
 
   if (error) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <div className="bg-red-50 border border-red-200 rounded p-4">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
@@ -50,8 +50,8 @@ const DuracionOutliersChart = ({
 
   if (!data?.datos_grafico) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <p className="text-gray-500">No hay datos disponibles</p>
       </div>
     );
@@ -174,8 +174,8 @@ const DuracionOutliersChart = ({
   return (
     <div className={`space-y-8 ${className}`}>
       {/* Causas más largas */}
-      <div className="bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <h3 className="text-xl font-bold mb-4 text-[#1E3A8A] tracking-tight">
+      <div className="bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300">
+        <h3 className="text-xl font-bold mb-4 text-primary tracking-tight">
           Top {limit} Causas con Mayor Duración
         </h3>
         {causasMasLargas.length > 0 ? (
@@ -184,6 +184,7 @@ const DuracionOutliersChart = ({
             data={dataMasLargas}
             title="Duración en días"
             options={createHorizontalOptions(causasMasLargas)}
+            maxColor="orange" // Naranja para mayor duración (por defecto)
           />
         ) : (
           <p className="text-gray-500">No hay datos disponibles</p>
@@ -191,8 +192,8 @@ const DuracionOutliersChart = ({
       </div>
 
       {/* Causas más cortas */}
-      <div className="bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-        <h3 className="text-xl font-bold mb-4 text-[#1E3A8A] tracking-tight">
+      <div className="bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300">
+        <h3 className="text-xl font-bold mb-4 text-primary tracking-tight">
           Top {limit} Causas con Menor Duración
         </h3>
         {causasMasCortas.length > 0 ? (
@@ -201,6 +202,7 @@ const DuracionOutliersChart = ({
             data={dataMasCortas}
             title="Duración en días"
             options={createHorizontalOptions(causasMasCortas)}
+            maxColor="accent" // Verde (accent) para menor duración
           />
         ) : (
           <p className="text-gray-500">No hay datos disponibles</p>

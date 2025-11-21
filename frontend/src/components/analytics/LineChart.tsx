@@ -14,12 +14,12 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
       {
         label: 'Cantidad de causas',
         data,
-        borderColor: 'rgba(30, 58, 138, 1)',
-        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+        borderColor: 'rgba(27, 64, 121, 1)', // Primary (Yale Blue)
+        backgroundColor: 'rgba(27, 64, 121, 0.15)', // Primary con opacidad baja
         borderWidth: 2.5,
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+        pointBackgroundColor: 'rgba(27, 64, 121, 1)', // Primary
         pointBorderColor: '#FFFFFF',
         pointBorderWidth: 2,
         pointRadius: 4,
@@ -43,6 +43,9 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
       },
       tooltip: {
         enabled: true,
+        backgroundColor: 'rgba(27, 64, 121, 0.9)', // Primary con opacidad
+        titleColor: '#FFFFFF',
+        bodyColor: '#FFFFFF',
         titleFont: {
           size: 14,
           weight: 'bold' as const,
@@ -51,6 +54,8 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
           size: 13,
           weight: 'normal' as const,
         },
+        padding: 12,
+        cornerRadius: 8,
       },
     },
     scales: {
@@ -76,7 +81,7 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
 
   return (
     <div className="p-2">
-      <h3 className="text-lg font-semibold mb-4 text-[#1E3A8A] tracking-tight">{title}</h3>
+      <h3 className="text-lg font-semibold mb-4 text-primary tracking-tight">{title}</h3>
       <div className="h-96">
         <Line data={chartData} options={options} />
       </div>

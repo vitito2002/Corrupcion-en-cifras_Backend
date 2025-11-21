@@ -25,18 +25,20 @@ interface StatsCardProps {
  */
 const StatsCard = ({ title, value, icon }: StatsCardProps) => {
   return (
-    <div className="bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-6 hover:shadow-lg transition-shadow">
+    <div className="bg-[#4D7C8A] border border-muted/30 shadow-md rounded-2xl p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ease-out">
       <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <p className="text-gray-600 text-sm font-medium mb-2">{title}</p>
-          <p className="text-3xl font-bold text-[#1E3A8A] tracking-tight">
+        <div className="flex-1 min-w-0">
+          <p className="text-white/80 text-xs font-medium uppercase tracking-wider mb-3">
+            {title}
+          </p>
+          <p className="text-3xl font-bold text-white tracking-tight">
             {value}
           </p>
         </div>
         {icon && (
           <div className="ml-4 flex-shrink-0">
-            <div className="w-12 h-12 rounded-full bg-[#93C5FD] bg-opacity-20 flex items-center justify-center">
-              <div className="text-[#3B82F6]">
+            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+              <div className="text-white w-5 h-5">
                 {icon}
               </div>
             </div>

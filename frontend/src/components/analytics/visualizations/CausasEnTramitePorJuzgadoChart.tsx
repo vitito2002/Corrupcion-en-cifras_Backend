@@ -59,11 +59,11 @@ const CausasEnTramitePorJuzgadoChart = ({
   // Ahora sí, los early returns después de todos los hooks
   if (loading) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#3B82F6] mx-auto mb-2"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
             <p className="text-gray-500 text-sm">Cargando datos...</p>
           </div>
         </div>
@@ -73,8 +73,8 @@ const CausasEnTramitePorJuzgadoChart = ({
 
   if (error) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <div className="bg-red-50 border border-red-200 rounded p-4">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
@@ -84,8 +84,8 @@ const CausasEnTramitePorJuzgadoChart = ({
 
   if (!data?.datos_grafico) {
     return (
-      <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
-        <h2 className="text-2xl font-bold mb-4 text-[#1E3A8A] tracking-tight">{title}</h2>
+      <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+        <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
         <p className="text-gray-500">No hay datos disponibles</p>
       </div>
     );
@@ -118,9 +118,9 @@ const CausasEnTramitePorJuzgadoChart = ({
   };
 
   return (
-    <div className={`bg-white border border-gray-200 shadow-md shadow-gray-200/60 rounded-xl p-8 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${className}`}>
+    <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold text-[#1E3A8A] tracking-tight">{title}</h2>
+        <h2 className="text-2xl font-bold text-primary tracking-tight">{title}</h2>
         <EstadoCausaSwitch estado={estado} onChange={setEstado} />
       </div>
       <BarChart
