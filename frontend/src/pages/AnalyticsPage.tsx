@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Tabs, { type Tab } from '@/components/ui/Tabs';
 import StatsCard from '@/components/ui/StatsCard';
 import {
@@ -13,11 +13,11 @@ import {
   CausasPorFueroChart,
   DuracionOutliersChart,
 } from '@/components/analytics/visualizations';
-import { downloadBaseZip, fetchCasosPorEstado, fetchDuracionInstruccion } from '@/services/analytics';
+import { fetchCasosPorEstado, fetchDuracionInstruccion, fetchUltimaActualizacion } from '@/services/analytics';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import type { CasosPorEstadoResponse, DuracionInstruccionResponse } from '@/types/analytics';
 
-type TabId = 'general' | 'personas' | 'fiscales' | 'juzgados' | 'otros' | 'exportacion';
+type TabId = 'general' | 'personas' | 'fiscales' | 'juzgados' | 'otros';
 
 /**
  * Componente para la sección de KPIs
@@ -75,14 +75,25 @@ const KPIsSection = () => {
 
 const AnalyticsPage = () => {
   const [activeTab, setActiveTab] = useState<TabId>('general');
+  const [ultimaActualizacion, setUltimaActualizacion] = useState<string | null>(null);
+
+  // Obtener fecha de última actualización
+  useEffect(() => {
+    const obtenerUltimaActualizacion = async () => {
+      const data = await fetchUltimaActualizacion();
+      if (data?.formato_fecha) {
+        setUltimaActualizacion(data.formato_fecha);
+      }
+    };
+    obtenerUltimaActualizacion();
+  }, []);
 
   const tabs: Tab[] = [
     { id: 'general', label: 'General' },
     { id: 'personas', label: 'Personas' },
-    { id: 'fiscales', label: 'Fiscales' },
+    { id: 'fiscales', label: 'Fiscalías' },
     { id: 'juzgados', label: 'Juzgados' },
     { id: 'otros', label: 'Otros' },
-    { id: 'exportacion', label: 'Exportación' },
   ];
 
   return (
@@ -98,6 +109,11 @@ const AnalyticsPage = () => {
           </h1>
           <p className="text-lg text-secondary max-w-2xl leading-relaxed">
             Visualización de datos sobre casos de corrupción en el sistema judicial
+            {ultimaActualizacion && (
+              <span className="block mt-2 text-sm text-gray-500">
+                Última actualización: {ultimaActualizacion}
+              </span>
+            )}
           </p>
         </div>
 
@@ -147,7 +163,7 @@ const AnalyticsPage = () => {
             </div>
           )}
 
-          {/* Pestaña: Fiscales */}
+          {/* Pestaña: Fiscalías */}
           {activeTab === 'fiscales' && (
             <div className="space-y-10 fade-in-up">
               <div className="stagger-item">
@@ -165,9 +181,6 @@ const AnalyticsPage = () => {
               <div className="stagger-item">
                 <JuecesMayorDemoraChart limit={10} />
               </div>
-              <div className="stagger-item">
-                <CausasPorFiscalChart limit={15} />
-              </div>
             </div>
           )}
 
@@ -179,65 +192,7 @@ const AnalyticsPage = () => {
               </div>
             </div>
           )}
-
-          {/* Pestaña: Exportación */}
-          {activeTab === 'exportacion' && (
-            <ExportacionTab />
-          )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-/**
- * Componente para la pestaña de exportación
- */
-const ExportacionTab = () => {
-  const [downloading, setDownloading] = useState(false);
-
-  const handleDownload = async () => {
-    setDownloading(true);
-    try {
-      await downloadBaseZip();
-    } catch (error) {
-      console.error('Error al descargar:', error);
-      // El error ya se loguea en downloadBaseZip
-    } finally {
-      setDownloading(false);
-    }
-  };
-
-  return (
-    <div className="space-y-10 fade-in-up">
-      <div className="bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-lg transition-all duration-300">
-        <h2 className="text-2xl font-bold mb-3 text-primary tracking-tight">
-          Descargar Base de Datos
-        </h2>
-        <p className="text-secondary mb-6 leading-relaxed">
-          Descarga toda la base de datos en formato ZIP. El archivo incluye todas las tablas
-          exportadas como archivos CSV.
-        </p>
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          className={`
-            w-full py-3.5 px-6 rounded-xl font-semibold text-base
-            transition-all duration-200 shadow-sm
-            ${downloading
-              ? 'bg-[#7F9C96] cursor-not-allowed text-white'
-              : 'bg-[#1B4079] hover:bg-[#4D7C8A] text-white hover:shadow-md hover:-translate-y-0.5'
-            }
-            focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-          `}
-        >
-          {downloading ? 'Descargando...' : 'Descargar base completa (ZIP)'}
-        </button>
-        {downloading && (
-          <p className="text-sm text-gray-500 mt-4 text-center">
-            Descargando...
-          </p>
-        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { fetchCausasPorFiscal } from '@/services/analytics';
-import type { CausasPorFiscalResponse } from '@/types/analytics';
+import { fetchCausasPorFiscalia } from '@/services/analytics';
+import type { CausasPorFiscaliaResponse } from '@/types/analytics';
 import type { EstadoCausa } from '@/components/ui/EstadoCausaSwitch';
 import EstadoCausaSwitch from '@/components/ui/EstadoCausaSwitch';
 import BarChart from '@/components/analytics/BarChart';
@@ -13,18 +13,18 @@ interface CausasPorFiscalChartProps {
 }
 
 /**
- * Componente completo para el gráfico de causas por fiscal
+ * Componente completo para el gráfico de causas por fiscalía
  * Incluye un switch para alternar entre causas abiertas, terminadas y ambas
  */
 const CausasPorFiscalChart = ({ 
-  title = 'Causas por Fiscal',
+  title = 'Causas por Fiscalía',
   limit,
   className = '' 
 }: CausasPorFiscalChartProps) => {
   const [estado, setEstado] = useState<EstadoCausa>('ambas');
   
-  const { data, loading, error } = useAnalytics<CausasPorFiscalResponse>(
-    () => fetchCausasPorFiscal(limit),
+  const { data, loading, error } = useAnalytics<CausasPorFiscaliaResponse>(
+    () => fetchCausasPorFiscalia(limit),
     limit !== undefined ? [limit] : []
   );
 
@@ -94,10 +94,10 @@ const CausasPorFiscalChart = ({
   }
 
   const tituloGrafico = estado === 'abiertas'
-    ? 'Cantidad de causas abiertas por fiscal'
+    ? 'Cantidad de causas abiertas por fiscalía'
     : estado === 'terminadas'
-    ? 'Cantidad de causas terminadas por fiscal'
-    : 'Cantidad total de causas por fiscal';
+    ? 'Cantidad de causas terminadas por fiscalía'
+    : 'Cantidad total de causas por fiscalía';
 
   // Opciones personalizadas para gráfico horizontal
   const horizontalOptions = {

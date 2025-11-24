@@ -7,10 +7,11 @@ import type {
   CausasEnTramitePorJuzgadoResponse,
   PersonasMasDenunciadasResponse,
   PersonasQueMasDenunciaronResponse,
-  CausasPorFiscalResponse,
+  CausasPorFiscaliaResponse,
   DuracionInstruccionResponse,
   CausasPorFueroResponse,
   DuracionOutliersResponse,
+  UltimaActualizacionResponse,
 } from '@/types/analytics';
 
 /**
@@ -120,17 +121,17 @@ export async function fetchPersonasQueMasDenunciaron(
 }
 
 /**
- * Obtiene las causas por fiscal
+ * Obtiene las causas por fiscalía
  */
-export async function fetchCausasPorFiscal(
+export async function fetchCausasPorFiscalia(
   limit?: number
-): Promise<CausasPorFiscalResponse | null> {
+): Promise<CausasPorFiscaliaResponse | null> {
   const endpoint = limit 
     ? `/analytics/causas-por-fiscal?limit=${limit}`
     : '/analytics/causas-por-fiscal';
-  const response = await get<CausasPorFiscalResponse>(endpoint);
+  const response = await get<CausasPorFiscaliaResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching causas por fiscal:', response.error);
+    console.error('Error fetching causas por fiscalía:', response.error);
     return null;
   }
   return response.data;
@@ -227,5 +228,17 @@ export async function downloadBaseZip(): Promise<void> {
     console.error('Error downloading base ZIP:', error);
     throw error;
   }
+}
+
+/**
+ * Obtiene la fecha de última actualización de los datos
+ */
+export async function fetchUltimaActualizacion(): Promise<UltimaActualizacionResponse | null> {
+  const response = await get<UltimaActualizacionResponse>('/analytics/ultima-actualizacion');
+  if (response.error || !response.data) {
+    console.error('Error fetching última actualización:', response.error);
+    return null;
+  }
+  return response.data;
 }
 

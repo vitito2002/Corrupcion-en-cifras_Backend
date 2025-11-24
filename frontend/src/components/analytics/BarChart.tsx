@@ -7,41 +7,21 @@ interface BarChartProps {
   data: number[];
   title: string;
   options?: ChartOptions<'bar'>;
-  maxColor?: string; // Color opcional para el valor máximo (por defecto naranja)
 }
 
-const BarChart = ({ labels, data, title, options: customOptions, maxColor }: BarChartProps) => {
-  // Encontrar el índice del valor máximo
-  const maxIndex = data.length > 0 
-    ? data.reduce((maxIdx, current, idx, arr) => (current > arr[maxIdx] ? idx : maxIdx), 0)
-    : -1;
-
-  // Color por defecto para el máximo: naranja (orange-500)
-  // Si se proporciona maxColor, usarlo; si no, usar naranja
-  const defaultMaxColor = 'rgba(249, 115, 22, 0.7)'; // Naranja
-  const defaultMaxBorderColor = 'rgba(234, 88, 12, 1)'; // Naranja más oscuro
-  const accentColor = 'rgba(203, 223, 144, 0.7)'; // Verde (accent) - solo para menor duración
-  const accentBorderColor = 'rgba(203, 223, 144, 1)';
-
-  const maxBgColor = maxColor === 'accent' ? accentColor : defaultMaxColor;
-  const maxBorderColor = maxColor === 'accent' ? accentBorderColor : defaultMaxBorderColor;
-
-  // Generar colores: naranja (o accent si se especifica) para el máximo, primary/secondary para el resto
+const BarChart = ({ labels, data, title, options: customOptions }: BarChartProps) => {
+  // Generar colores: primary y secondary alternados
   // Convertir hex a rgba: #1B4079 = rgb(27, 64, 121), #4D7C8A = rgb(77, 124, 138)
   const backgroundColor = data.map((_, index) => 
-    index === maxIndex 
-      ? maxBgColor
-      : index % 2 === 0 
-        ? 'rgba(27, 64, 121, 0.7)' // Primary (Yale Blue)
-        : 'rgba(77, 124, 138, 0.7)' // Secondary (Air Force Blue)
+    index % 2 === 0 
+      ? 'rgba(27, 64, 121, 0.7)' // Primary (Yale Blue)
+      : 'rgba(77, 124, 138, 0.7)' // Secondary (Air Force Blue)
   );
 
   const borderColor = data.map((_, index) => 
-    index === maxIndex 
-      ? maxBorderColor
-      : index % 2 === 0
-        ? 'rgba(27, 64, 121, 1)' // Primary
-        : 'rgba(77, 124, 138, 1)' // Secondary
+    index % 2 === 0
+      ? 'rgba(27, 64, 121, 1)' // Primary
+      : 'rgba(77, 124, 138, 1)' // Secondary
   );
 
   const chartData = {

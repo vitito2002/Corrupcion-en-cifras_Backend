@@ -64,8 +64,29 @@ class JuezRepository:
                 GROUP BY j.juez_id, j.nombre, t.nombre
             )
             SELECT 
-                juez_nombre,
-                tribunal_nombre,
+                REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(
+                            REGEXP_REPLACE(
+                                TRIM(juez_nombre),
+                                '^Dr\.?\s+', '', 'g'
+                            ),
+                            '^Dra\.?\s+', '', 'g'
+                        ),
+                        '^DR\.?\s+', '', 'g'
+                    ),
+                    '^DRA\.?\s+', '', 'g'
+                ) AS juez_nombre,
+                REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                        REPLACE(
+                            REPLACE(tribunal_nombre, ' LO ', ' Lo '),
+                            ' LOS ', ' Los '
+                        ),
+                        '^LO ', 'Lo ', 'g'
+                    ),
+                    '^LOS ', 'Los ', 'g'
+                ) AS tribunal_nombre,
                 ROUND(demora_promedio_dias, 2) AS demora_promedio_dias,
                 cantidad_expedientes
             FROM demoras_jueces

@@ -376,15 +376,42 @@ class ExpedienteRepository:
         """
         # Usar el campo TEXT tribunal directamente (no hay FK id_tribunal)
         query = text("""
+            WITH tribunales_limpios AS (
+                SELECT 
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(
+                            REGEXP_REPLACE(
+                                REGEXP_REPLACE(
+                                    TRIM(tribunal),
+                                    '^Dr\.?\s+', '', 'g'
+                                ),
+                                '^Dra\.?\s+', '', 'g'
+                            ),
+                            '^DR\.?\s+', '', 'g'
+                        ),
+                        '^DRA\.?\s+', '', 'g'
+                    ) AS tribunal_limpio,
+                    estado_procesal
+                FROM expediente
+                WHERE tribunal IS NOT NULL 
+                  AND tribunal != ''
+            )
             SELECT 
-                tribunal,
+                REGEXP_REPLACE(
+                    REGEXP_REPLACE(
+                        REPLACE(
+                            REPLACE(tribunal_limpio, ' LO ', ' Lo '),
+                            ' LOS ', ' Los '
+                        ),
+                        '^LO ', 'Lo ', 'g'
+                    ),
+                    '^LOS ', 'Los ', 'g'
+                ) AS tribunal,
                 COUNT(CASE WHEN estado_procesal = 'En trámite' THEN 1 END) AS cantidad_causas_abiertas,
                 COUNT(CASE WHEN estado_procesal = 'Terminada' THEN 1 END) AS cantidad_causas_terminadas,
                 COUNT(*) AS cantidad_causas
-            FROM expediente
-            WHERE tribunal IS NOT NULL 
-              AND tribunal != ''
-            GROUP BY tribunal
+            FROM tribunales_limpios
+            GROUP BY tribunal_limpio
             ORDER BY cantidad_causas DESC
             LIMIT :limit
         """)
@@ -473,29 +500,44 @@ class ExpedienteRepository:
         
         return fueros
     
-    def get_causas_por_fiscal(self, limit: int = 20) -> List[Dict[str, Any]]:
+    def get_causas_por_fiscalia(self, limit: int = 20) -> List[Dict[str, Any]]:
         """
-        Obtiene la cantidad de causas agrupadas por fiscal, clasificadas por estado procesal.
+        Obtiene la cantidad de causas agrupadas por fiscalía, clasificadas por estado procesal.
         
         Args:
-            limit: Número máximo de fiscales a retornar (default: 20)
+            limit: Número máximo de fiscalías a retornar (default: 20)
             
         Returns:
             Lista de diccionarios con:
-            - fiscal: Nombre del fiscal
+            - fiscalia: Nombre de la fiscalía
             - causas_abiertas: Cantidad de causas en trámite (abiertas)
             - causas_terminadas: Cantidad de causas terminadas
-            - total_causas: Total de causas del fiscal
+            - total_causas: Total de causas de la fiscalía
         """
         query = text("""
+            WITH fiscalias_limpias AS (
+                SELECT 
+                    REGEXP_REPLACE(
+                        REGEXP_REPLACE(
+                            REPLACE(
+                                REPLACE(TRIM(fiscalia), ' LO ', ' Lo '),
+                                ' LOS ', ' Los '
+                            ),
+                            '^LO ', 'Lo ', 'g'
+                        ),
+                        '^LOS ', 'Los ', 'g'
+                    ) AS fiscalia_limpia,
+                    estado_procesal
+                FROM expediente
+                WHERE fiscalia IS NOT NULL AND fiscalia != ''
+            )
             SELECT 
-                fiscal,
+                fiscalia_limpia AS fiscalia,
                 COUNT(CASE WHEN estado_procesal = 'En trámite' THEN 1 END) AS causas_abiertas,
                 COUNT(CASE WHEN estado_procesal = 'Terminada' THEN 1 END) AS causas_terminadas,
                 COUNT(*) AS total_causas
-            FROM expediente
-            WHERE fiscal IS NOT NULL AND fiscal != ''
-            GROUP BY fiscal
+            FROM fiscalias_limpias
+            GROUP BY fiscalia_limpia
             ORDER BY total_causas DESC
             LIMIT :limit
         """)
@@ -503,16 +545,16 @@ class ExpedienteRepository:
         result = self.db.execute(query, {"limit": limit})
         
         # Convertir resultados a lista de diccionarios
-        fiscales = []
+        fiscalias = []
         for row in result:
-            fiscales.append({
-                "fiscal": row.fiscal,
+            fiscalias.append({
+                "fiscalia": row.fiscalia,
                 "causas_abiertas": int(row.causas_abiertas),
                 "causas_terminadas": int(row.causas_terminadas),
                 "total_causas": int(row.total_causas)
             })
         
-        return fiscales
+        return fiscalias
     
     def get_duracion_instruccion(self, limit: int = 50) -> List[Dict[str, Any]]:
         """

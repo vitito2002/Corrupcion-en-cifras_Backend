@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
+import { downloadBaseZip } from '@/services/analytics';
 
 /**
  * Header institucional premium visible en todas las páginas
@@ -9,8 +10,20 @@ import { useRef, useEffect, useState } from 'react';
 const Header = () => {
   const location = useLocation();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+  const [downloading, setDownloading] = useState(false);
   const linkRefs = useRef<{ [key: string]: HTMLAnchorElement | null }>({});
   const navRef = useRef<HTMLElement>(null);
+
+  const handleExport = async () => {
+    setDownloading(true);
+    try {
+      await downloadBaseZip();
+    } catch (error) {
+      console.error('Error al descargar:', error);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const navLinks = [
     { path: '/', label: 'Inicio' },
@@ -79,6 +92,35 @@ const Header = () => {
             {link.label}
           </Link>
         ))}
+
+        {/* Botón de Exportación con Tooltip */}
+        <div className="relative group ml-4">
+          <button
+            onClick={handleExport}
+            disabled={downloading}
+            className={`
+              px-5 py-2 rounded-lg text-sm font-semibold
+              transition-all duration-200 shadow-sm
+              ${downloading
+                ? 'bg-[#7F9C96] cursor-not-allowed text-white'
+                : 'bg-[#1B4079] hover:bg-[#4D7C8A] text-white hover:shadow-md hover:-translate-y-0.5'
+              }
+              focus:outline-none focus:ring-2 focus:ring-[#1B4079] focus:ring-offset-2
+            `}
+          >
+            {downloading ? 'Descargando...' : 'Exportación'}
+          </button>
+          
+          {/* Tooltip - Abajo alineado a la derecha del botón */}
+          {!downloading && (
+            <div className="absolute top-full right-0 mt-2 px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap z-[100] border border-gray-700 min-w-max">
+              Descargar base de datos completa en formato ZIP
+              <div className="absolute bottom-full right-4 -mb-1">
+                <div className="border-4 border-transparent border-b-gray-900"></div>
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
     </header>
   );

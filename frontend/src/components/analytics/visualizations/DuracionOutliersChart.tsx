@@ -11,7 +11,7 @@ interface DuracionOutliersChartProps {
 
 /**
  * Componente completo para el gráfico de outliers de duración de instrucción
- * Muestra dos gráficos: uno para las causas más largas y otro para las más cortas
+ * Muestra las causas con mayor duración
  */
 const DuracionOutliersChart = ({ 
   title = 'Outliers de Duración de Instrucción',
@@ -57,9 +57,8 @@ const DuracionOutliersChart = ({
     );
   }
 
-  // Preparar datos para gráficos de barras horizontales
+  // Preparar datos para gráfico de barras horizontal
   const causasMasLargas = data.datos_grafico.causas_mas_largas;
-  const causasMasCortas = data.datos_grafico.causas_mas_cortas;
 
   // Labels para causas más largas (usar nombre del imputado)
   const labelsMasLargas = causasMasLargas.map(causa => {
@@ -67,13 +66,6 @@ const DuracionOutliersChart = ({
     return nombre.length > 50 ? nombre.substring(0, 47) + '...' : nombre;
   });
   const dataMasLargas = causasMasLargas.map(causa => causa.duracion_dias);
-
-  // Labels para causas más cortas (usar nombre del imputado)
-  const labelsMasCortas = causasMasCortas.map(causa => {
-    const nombre = causa.imputado_nombre || 'Sin imputado';
-    return nombre.length > 50 ? nombre.substring(0, 47) + '...' : nombre;
-  });
-  const dataMasCortas = causasMasCortas.map(causa => causa.duracion_dias);
 
   // Función helper para formatear fecha
   const formatearFecha = (fecha: string | null) => {
@@ -172,42 +164,18 @@ const DuracionOutliersChart = ({
   };
 
   return (
-    <div className={`space-y-8 ${className}`}>
-      {/* Causas más largas */}
-      <div className="bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300">
-        <h3 className="text-xl font-bold mb-4 text-primary tracking-tight">
-          Top {limit} Causas con Mayor Duración
-        </h3>
-        {causasMasLargas.length > 0 ? (
-          <BarChart
-            labels={labelsMasLargas}
-            data={dataMasLargas}
-            title="Duración en días"
-            options={createHorizontalOptions(causasMasLargas)}
-            maxColor="orange" // Naranja para mayor duración (por defecto)
-          />
-        ) : (
-          <p className="text-gray-500">No hay datos disponibles</p>
-        )}
-      </div>
-
-      {/* Causas más cortas */}
-      <div className="bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300">
-        <h3 className="text-xl font-bold mb-4 text-primary tracking-tight">
-          Top {limit} Causas con Menor Duración
-        </h3>
-        {causasMasCortas.length > 0 ? (
-          <BarChart
-            labels={labelsMasCortas}
-            data={dataMasCortas}
-            title="Duración en días"
-            options={createHorizontalOptions(causasMasCortas)}
-            maxColor="accent" // Verde (accent) para menor duración
-          />
-        ) : (
-          <p className="text-gray-500">No hay datos disponibles</p>
-        )}
-      </div>
+    <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
+      <h2 className="text-2xl font-bold mb-4 text-primary tracking-tight">{title}</h2>
+      {causasMasLargas.length > 0 ? (
+        <BarChart
+          labels={labelsMasLargas}
+          data={dataMasLargas}
+          title={`Top ${limit} Causas con Mayor Duración`}
+          options={createHorizontalOptions(causasMasLargas)}
+        />
+      ) : (
+        <p className="text-gray-500">No hay datos disponibles</p>
+      )}
     </div>
   );
 };

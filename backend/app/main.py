@@ -12,7 +12,8 @@ from app.routers import (
     causas_por_fuero_router,
     personas_mas_denunciadas_router,
     personas_que_mas_denunciaron_router,
-    causas_por_fiscal_router
+    causas_por_fiscalia_router,
+    metadata_router
 )
 
 app = FastAPI(title="Corrupción en Cifras API")
@@ -43,7 +44,8 @@ app.include_router(exportacion_router.router)
 app.include_router(causas_por_fuero_router.router)
 app.include_router(personas_mas_denunciadas_router.router)
 app.include_router(personas_que_mas_denunciaron_router.router)
-app.include_router(causas_por_fiscal_router.router)
+app.include_router(causas_por_fiscalia_router.router)
+app.include_router(metadata_router.router)
 
 
 @app.get("/")

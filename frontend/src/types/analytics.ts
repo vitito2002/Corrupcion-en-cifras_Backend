@@ -1,5 +1,10 @@
 // Tipos para los endpoints de analytics
 
+export interface UltimaActualizacionResponse {
+  ultima_actualizacion: string | null;
+  formato_fecha: string;
+}
+
 export interface CasosPorEstadoResponse {
   datos_grafico: {
     labels: string[];
@@ -98,13 +103,13 @@ export interface PersonasQueMasDenunciaronResponse {
   };
 }
 
-export interface CausasPorFiscalResponse {
+export interface CausasPorFiscaliaResponse {
   datos_grafico: {
     labels: string[];
     causas_abiertas: number[];
     causas_terminadas: number[];
-    fiscales: Array<{
-      fiscal: string;
+    fiscalias: Array<{
+      fiscalia: string;
       causas_abiertas: number;
       causas_terminadas: number;
       total_causas: number;
