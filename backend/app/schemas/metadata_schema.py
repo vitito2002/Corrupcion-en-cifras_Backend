@@ -11,3 +11,5 @@ class UltimaActualizacionResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+

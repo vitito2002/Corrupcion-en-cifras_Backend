@@ -18,21 +18,18 @@ from app.routers import (
 
 app = FastAPI(title="Corrupción en Cifras API")
 
-# Configurar CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5174",
-        "http://localhost:5173",  # Por si cambias el puerto de Vite
+        "http://localhost:5173",
         "http://127.0.0.1:5174",
         "http://127.0.0.1:5173",
     ],
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permite todos los headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
-# Registrar routers
 app.include_router(expedientes_por_estado_procesal_router.router)
 app.include_router(jueces_mayor_demora_router.router)
 app.include_router(causas_iniciadas_por_ano_router.router)
@@ -50,5 +47,5 @@ app.include_router(metadata_router.router)
 
 @app.get("/")
 def read_root():
-    return {"message": "API funcionando ✅"}
+    return {"message": "API funcionando"}
 

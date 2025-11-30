@@ -20,18 +20,7 @@ router = APIRouter(prefix="/analytics", tags=["analytics"])
 def get_casos_por_estado_procesal(
     expediente_repo: ExpedienteRepository = Depends(get_expediente_repository)
 ):
-    """
-    Obtiene datos procesados y agregados por estado procesal listos para graficar.
-    
-    Retorna:
-    - **labels**: Lista de estados procesales ['En trámite', 'Terminada']
-    - **data**: Lista de conteos [264, 1807]
-    - **porcentajes**: Lista de porcentajes [12.7, 87.3]
-    - **total**: Total de casos
-    
-    Los datos están listos para usar directamente en librerías como Chart.js, D3, etc.
-    """
-    # Crear el service con el repository inyectado
+    """Obtiene datos procesados y agregados por estado procesal listos para graficar."""
     service = CausasPorEstadoProcesalService(expediente_repo)
     
     return service.get_datos_grafico()

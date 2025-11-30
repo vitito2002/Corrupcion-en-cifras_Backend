@@ -11,3 +11,5 @@ INSERT INTO metadata (clave, valor)
 VALUES ('ultima_actualizacion', NOW())
 ON CONFLICT (clave) DO NOTHING;
 
+
+

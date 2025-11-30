@@ -2,11 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 import { downloadBaseZip } from '@/services/analytics';
 
-/**
- * Header institucional premium visible en todas las páginas
- * Diseño moderno, elegante y profesional con navegación mejorada
- * Incluye animación de desplazamiento suave para el indicador activo
- */
 const Header = () => {
   const location = useLocation();
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
@@ -19,7 +14,6 @@ const Header = () => {
     try {
       await downloadBaseZip();
     } catch (error) {
-      console.error('Error al descargar:', error);
     } finally {
       setDownloading(false);
     }
@@ -49,7 +43,6 @@ const Header = () => {
 
   return (
     <header className="bg-white/80 backdrop-blur-sm border-b border-muted/30 shadow-sm h-20 flex items-center justify-between px-8 sticky top-0 z-50">
-      {/* Logo / Nombre del proyecto */}
       <Link 
         to="/" 
         className="flex items-center group transition-opacity duration-200 hover:opacity-80"
@@ -59,12 +52,10 @@ const Header = () => {
         </h1>
       </Link>
 
-      {/* Navegación */}
       <nav 
         ref={navRef}
         className="relative flex items-center space-x-1"
       >
-        {/* Indicador animado */}
         <div
           className="absolute bottom-0 h-0.5 bg-[#4D7C8A] rounded-full transition-all duration-300 ease-out"
           style={{
@@ -93,7 +84,6 @@ const Header = () => {
           </Link>
         ))}
 
-        {/* Botón de Exportación con Tooltip */}
         <div className="relative group ml-4">
           <button
             onClick={handleExport}
@@ -111,7 +101,6 @@ const Header = () => {
             {downloading ? 'Descargando...' : 'Exportación'}
           </button>
           
-          {/* Tooltip - Abajo alineado a la derecha del botón */}
           {!downloading && (
             <div className="absolute top-full right-0 mt-2 px-4 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-lg shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap z-[100] border border-gray-700 min-w-max">
               Descargar base de datos completa en formato ZIP

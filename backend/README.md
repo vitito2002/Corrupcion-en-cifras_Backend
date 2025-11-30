@@ -2,7 +2,17 @@
 
 Backend FastAPI para el dashboard de visualizaciones "Corrupción en Cifras".
 
-## 🚀 Inicio Rápido
+## Descripción
+
+API REST desarrollada con FastAPI que proporciona endpoints para consultar y analizar datos de casos de corrupción en Argentina. La arquitectura sigue un patrón de capas con repositories, services y routers.
+
+## Requisitos
+
+- Python 3.11+
+- PostgreSQL 15
+- Docker y Docker Compose (opcional)
+
+## Instalación
 
 ### Opción 1: Con Docker Compose (Recomendado)
 
@@ -12,12 +22,12 @@ docker compose up
 
 La API estará disponible en `http://localhost:8000`
 
-### Opción 2: Desarrollo Local (sin Docker)
+### Opción 2: Desarrollo Local
 
 1. Crear entorno virtual:
 ```bash
 python -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate
 ```
 
 2. Instalar dependencias:
@@ -36,7 +46,7 @@ uvicorn app.main:app --reload
 
 La API estará disponible en `http://localhost:8000`
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 app/
@@ -50,10 +60,23 @@ app/
 └── utils/               # Utilidades
 ```
 
-## 🔧 Variables de Entorno
+## Variables de Entorno
 
 Ver `.env.example` para la lista completa de variables requeridas.
 
-## 📝 Endpoints
+## Endpoints
 
-- `GET /` - Health check: `{"message": "API funcionando ✅"}`
+- `GET /` - Health check
+- `GET /analytics/casos-por-estado` - Casos por estado procesal
+- `GET /analytics/jueces-mayor-demora` - Jueces con mayor demora promedio
+- `GET /analytics/causas-iniciadas-por-ano` - Evolución temporal de causas
+- `GET /analytics/delitos-mas-frecuentes` - Delitos más frecuentes
+- `GET /analytics/causas-en-tramite-por-juzgado` - Causas en trámite por juzgado
+- `GET /analytics/duracion-instruccion` - Duración de instrucción de causas
+- `GET /analytics/causas-por-fuero` - Causas por fuero judicial
+- `GET /analytics/causas-por-fiscal` - Causas por fiscal
+- `GET /analytics/personas-mas-denunciadas` - Personas más denunciadas
+- `GET /analytics/personas-que-mas-denunciaron` - Personas que más denunciaron
+- `GET /exportacion/descargar-base-de-datos` - Descargar base de datos completa
+
+Documentación interactiva disponible en `http://localhost:8000/docs`

@@ -99,6 +99,16 @@ const CausasPorFiscalChart = ({
     ? 'Cantidad de causas terminadas por fiscalía'
     : 'Cantidad total de causas por fiscalía';
 
+  // Calcular el máximo global entre todas las opciones para fijar la escala
+  const maxAbiertas = Math.max(...data.datos_grafico.causas_abiertas, 0);
+  const maxTerminadas = Math.max(...data.datos_grafico.causas_terminadas, 0);
+  const maxAmbas = Math.max(...data.datos_grafico.causas_abiertas.map((abiertas, index) => 
+    abiertas + data.datos_grafico.causas_terminadas[index]
+  ), 0);
+  const maxGlobal = Math.max(maxAbiertas, maxTerminadas, maxAmbas);
+  // Agregar un pequeño margen (10%) para mejor visualización
+  const maxX = Math.ceil(maxGlobal * 1.1);
+
   // Opciones personalizadas para gráfico horizontal
   const horizontalOptions = {
     indexAxis: 'y' as const,
@@ -109,6 +119,7 @@ const CausasPorFiscalChart = ({
     scales: {
       x: {
         beginAtZero: true,
+        max: maxX,
       },
       y: {
         ticks: {

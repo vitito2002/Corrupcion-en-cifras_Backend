@@ -95,6 +95,23 @@ const CausasPorFueroChart = ({
     ? 'Cantidad de causas terminadas por fuero judicial'
     : 'Cantidad de causas por fuero judicial';
 
+  // Calcular el máximo global entre todas las opciones para fijar la escala
+  const maxAbiertas = Math.max(...data.datos_grafico.causas_abiertas, 0);
+  const maxTerminadas = Math.max(...data.datos_grafico.causas_terminadas, 0);
+  const maxAmbas = Math.max(...data.datos_grafico.data, 0);
+  const maxGlobal = Math.max(maxAbiertas, maxTerminadas, maxAmbas);
+  // Agregar un pequeño margen (10%) para mejor visualización
+  const maxY = Math.ceil(maxGlobal * 1.1);
+
+  // Opciones para fijar la escala del eje Y
+  const chartOptions = {
+    scales: {
+      y: {
+        max: maxY,
+      },
+    },
+  };
+
   return (
     <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
       <div className="flex items-center justify-between mb-4">
@@ -105,6 +122,7 @@ const CausasPorFueroChart = ({
         labels={labelsOrdenados}
         data={datosOrdenados}
         title={tituloGrafico}
+        options={chartOptions}
       />
     </div>
   );

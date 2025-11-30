@@ -67,11 +67,28 @@ const CausasIniciadasPorAnoChart = ({
     ? data.datos_grafico.causas_terminadas
     : data.datos_grafico.data;
 
+  // Calcular el máximo global entre todas las opciones para fijar la escala
+  const maxAbiertas = Math.max(...data.datos_grafico.causas_abiertas, 0);
+  const maxTerminadas = Math.max(...data.datos_grafico.causas_terminadas, 0);
+  const maxAmbas = Math.max(...data.datos_grafico.data, 0);
+  const maxGlobal = Math.max(maxAbiertas, maxTerminadas, maxAmbas);
+  // Agregar un pequeño margen (10%) para mejor visualización
+  const maxY = Math.ceil(maxGlobal * 1.1);
+
   const tituloGrafico = estado === 'abiertas'
     ? 'Evolución temporal de causas abiertas iniciadas'
     : estado === 'terminadas'
     ? 'Evolución temporal de causas terminadas iniciadas'
     : 'Evolución temporal de causas iniciadas';
+
+  // Opciones para fijar la escala del eje Y
+  const chartOptions = {
+    scales: {
+      y: {
+        max: maxY,
+      },
+    },
+  };
 
   return (
     <div className={`bg-white border border-muted/30 shadow-md rounded-2xl p-8 hover:shadow-md-hover hover:-translate-y-0.5 transition-all duration-300 ${className}`}>
@@ -83,6 +100,7 @@ const CausasIniciadasPorAnoChart = ({
         labels={data.datos_grafico.labels}
         data={datosGrafico}
         title={tituloGrafico}
+        options={chartOptions}
       />
     </div>
   );

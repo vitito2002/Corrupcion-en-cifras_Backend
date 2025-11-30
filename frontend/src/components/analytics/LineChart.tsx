@@ -1,13 +1,15 @@
 import '@/config/chart';
 import { Line } from 'react-chartjs-2';
+import type { ChartOptions } from 'chart.js';
 
 interface LineChartProps {
   labels: (string | number)[];
   data: number[];
   title: string;
+  options?: ChartOptions<'line'>;
 }
 
-const LineChart = ({ labels, data, title }: LineChartProps) => {
+const LineChart = ({ labels, data, title, options: customOptions }: LineChartProps) => {
   const chartData = {
     labels: labels.map(String),
     datasets: [
@@ -27,7 +29,7 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
     ],
   };
 
-  const options = {
+  const defaultOptions: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -78,6 +80,43 @@ const LineChart = ({ labels, data, title }: LineChartProps) => {
       },
     },
   };
+
+  // Merge de opciones personalizadas con las opciones por defecto
+  let options = defaultOptions;
+  if (customOptions) {
+    options = {
+      ...defaultOptions,
+      ...customOptions,
+      scales: {
+        ...defaultOptions.scales,
+        ...(customOptions.scales || {}),
+        x: {
+          ...defaultOptions.scales?.x,
+          ...(customOptions.scales?.x || {}),
+          ticks: {
+            ...defaultOptions.scales?.x?.ticks,
+            ...(customOptions.scales?.x?.ticks || {}),
+            font: {
+              size: 13,
+              weight: 'bold' as const,
+            },
+          },
+        },
+        y: {
+          ...defaultOptions.scales?.y,
+          ...(customOptions.scales?.y || {}),
+          ticks: {
+            ...defaultOptions.scales?.y?.ticks,
+            ...(customOptions.scales?.y?.ticks || {}),
+            font: {
+              size: 13,
+              weight: 'bold' as const,
+            },
+          },
+        },
+      },
+    } as ChartOptions<'line'>;
+  }
 
   return (
     <div className="p-2">

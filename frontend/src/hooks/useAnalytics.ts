@@ -46,7 +46,6 @@ export function useAnalytics<T>(
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error desconocido al cargar los datos';
       setError(errorMessage);
-      console.error('Error in useAnalytics:', err);
       setData(null);
     } finally {
       setLoading(false);

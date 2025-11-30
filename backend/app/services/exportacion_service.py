@@ -9,12 +9,8 @@ from app.core.database import SessionLocal
 
 
 class ExportacionService:
-    """
-    Service para exportar la base de datos completa a un archivo ZIP.
-    Todas las operaciones se realizan en memoria.
-    """
+    """Service para exportar la base de datos completa a un archivo ZIP."""
     
-    # Lista de tablas a exportar
     TABLAS = [
         "fuero",
         "jurisdiccion",
@@ -53,21 +49,14 @@ class ExportacionService:
         Returns:
             String con el contenido CSV de la tabla
         """
-        # Ejecutar query para obtener todos los datos
         query = text(f"SELECT * FROM {nombre_tabla}")
         result = self.db.execute(query)
-        
-        # Obtener nombres de columnas
         columns = result.keys()
         
-        # Crear CSV en memoria
         output = io.StringIO()
         writer = csv.writer(output)
-        
-        # Escribir encabezados
         writer.writerow(columns)
         
-        # Escribir filas
         for row in result:
             writer.writerow(row)
         
@@ -76,31 +65,22 @@ class ExportacionService:
     def generar_zip_completo(self) -> io.BytesIO:
         """
         Genera un archivo ZIP con todas las tablas exportadas como CSV.
-        Todo se realiza en memoria.
         
         Returns:
             BytesIO con el contenido del archivo ZIP
         """
-        # Crear ZIP en memoria
         zip_buffer = io.BytesIO()
         
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            # Exportar cada tabla
             for tabla in self.TABLAS:
                 try:
-                    # Convertir tabla a CSV
                     csv_content = self._tabla_a_csv(tabla)
-                    
-                    # Agregar CSV al ZIP
                     zip_file.writestr(f"{tabla}.csv", csv_content)
                 except Exception as e:
-                    # Si hay un error con una tabla, continuar con las demás
                     print(f"Error exportando tabla {tabla}: {e}")
-                    # Agregar un archivo de error al ZIP
                     error_content = f"Error al exportar esta tabla: {str(e)}"
                     zip_file.writestr(f"{tabla}_ERROR.txt", error_content)
         
-        # Resetear el buffer al inicio para que pueda ser leído
         zip_buffer.seek(0)
         
         return zip_buffer

@@ -20,7 +20,6 @@ import type {
 export async function fetchCasosPorEstado(): Promise<CasosPorEstadoResponse | null> {
   const response = await get<CasosPorEstadoResponse>('/analytics/casos-por-estado');
   if (response.error || !response.data) {
-    console.error('Error fetching casos por estado:', response.error);
     return null;
   }
   return response.data;
@@ -36,7 +35,6 @@ export async function fetchJuecesMayorDemora(
     `/analytics/jueces-mayor-demora?limit=${limit}`
   );
   if (response.error || !response.data) {
-    console.error('Error fetching jueces mayor demora:', response.error);
     return null;
   }
   return response.data;
@@ -48,7 +46,6 @@ export async function fetchJuecesMayorDemora(
 export async function fetchCausasIniciadasPorAno(): Promise<CausasIniciadasPorAnoResponse | null> {
   const response = await get<CausasIniciadasPorAnoResponse>('/analytics/causas-iniciadas-por-ano');
   if (response.error || !response.data) {
-    console.error('Error fetching causas iniciadas por año:', response.error);
     return null;
   }
   return response.data;
@@ -64,7 +61,6 @@ export async function fetchDelitosMasFrecuentes(
     `/analytics/delitos-mas-frecuentes?limit=${limit}`
   );
   if (response.error || !response.data) {
-    console.error('Error fetching delitos mas frecuentes:', response.error);
     return null;
   }
   return response.data;
@@ -80,7 +76,6 @@ export async function fetchCausasEnTramitePorJuzgado(
     `/analytics/causas-en-tramite-por-juzgado?limit=${limit}`
   );
   if (response.error || !response.data) {
-    console.error('Error fetching causas en tramite por juzgado:', response.error);
     return null;
   }
   return response.data;
@@ -97,7 +92,6 @@ export async function fetchPersonasMasDenunciadas(
     : '/analytics/personas-mas-denunciadas';
   const response = await get<PersonasMasDenunciadasResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching personas mas denunciadas:', response.error);
     return null;
   }
   return response.data;
@@ -114,7 +108,6 @@ export async function fetchPersonasQueMasDenunciaron(
     : '/analytics/personas-que-mas-denunciaron';
   const response = await get<PersonasQueMasDenunciaronResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching personas que mas denunciaron:', response.error);
     return null;
   }
   return response.data;
@@ -131,7 +124,6 @@ export async function fetchCausasPorFiscalia(
     : '/analytics/causas-por-fiscal';
   const response = await get<CausasPorFiscaliaResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching causas por fiscalía:', response.error);
     return null;
   }
   return response.data;
@@ -148,7 +140,6 @@ export async function fetchDuracionInstruccion(
     : '/analytics/duracion-instruccion';
   const response = await get<DuracionInstruccionResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching duracion instruccion:', response.error);
     return null;
   }
   return response.data;
@@ -160,7 +151,6 @@ export async function fetchDuracionInstruccion(
 export async function fetchCausasPorFuero(): Promise<CausasPorFueroResponse | null> {
   const response = await get<CausasPorFueroResponse>('/analytics/causas-por-fuero');
   if (response.error || !response.data) {
-    console.error('Error fetching causas por fuero:', response.error);
     return null;
   }
   return response.data;
@@ -177,7 +167,6 @@ export async function fetchDuracionOutliers(
     : '/analytics/duracion-outliers';
   const response = await get<DuracionOutliersResponse>(endpoint);
   if (response.error || !response.data) {
-    console.error('Error fetching duracion outliers:', response.error);
     return null;
   }
   return response.data;
@@ -225,7 +214,6 @@ export async function downloadBaseZip(): Promise<void> {
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('Error downloading base ZIP:', error);
     throw error;
   }
 }
@@ -236,7 +224,6 @@ export async function downloadBaseZip(): Promise<void> {
 export async function fetchUltimaActualizacion(): Promise<UltimaActualizacionResponse | null> {
   const response = await get<UltimaActualizacionResponse>('/analytics/ultima-actualizacion');
   if (response.error || !response.data) {
-    console.error('Error fetching última actualización:', response.error);
     return null;
   }
   return response.data;

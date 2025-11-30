@@ -11,39 +11,24 @@ Dashboard de visualizaciones sobre casos de corrupción en Argentina.
 │   ├── requirements.txt
 │   ├── Dockerfile
 │   ├── docker-compose.yaml
-│   └── .env
-└── frontend/         # Frontend (pendiente de implementación)
+│   └── scripts/      # Scripts ETL y utilidades
+└── frontend/         # Frontend React + TypeScript
+    ├── src/          # Código fuente
+    └── package.json
 ```
 
-## Backend
-
-El backend está desarrollado con FastAPI y se encuentra en la carpeta `backend/`.
-
-Para más información sobre cómo ejecutar el backend, consulta el [README del backend](./backend/README.md).
-
-### Endpoints Disponibles
-
-- `GET /` - Verificación de estado
-- `GET /analytics/casos-por-estado` - Casos por estado procesal
-- `GET /analytics/jueces-mayor-demora` - Jueces con mayor demora promedio
-- `GET /analytics/causas-iniciadas-por-ano` - Evolución temporal de causas
-- `GET /analytics/delitos-mas-frecuentes` - Delitos más frecuentes
-- `GET /analytics/causas-en-tramite-por-juzgado` - Causas en trámite por juzgado
-- `GET /analytics/duracion-instruccion` - Duración de instrucción de causas
-
-## Frontend
-
-El frontend se implementará en la carpeta `frontend/`.
-
-## Desarrollo
-
-### Requisitos
+## Requisitos
 
 - Python 3.11+
+- Node.js 18+
 - PostgreSQL 15
 - Docker y Docker Compose (opcional)
 
-### Inicio Rápido
+## Inicio Rápido
+
+### Backend
+
+Para más información sobre cómo ejecutar el backend, consulta el [README del backend](./backend/README.md).
 
 1. Navegar a la carpeta backend:
    ```bash
@@ -53,7 +38,6 @@ El frontend se implementará en la carpeta `frontend/`.
 2. Configurar variables de entorno:
    ```bash
    cp .env.example .env
-   # Editar .env con tus credenciales
    ```
 
 3. Ejecutar con Docker Compose:
@@ -71,4 +55,40 @@ El frontend se implementará en la carpeta `frontend/`.
 
 La API estará disponible en `http://localhost:8000`
 Documentación interactiva en `http://localhost:8000/docs`
+
+### Frontend
+
+Para más información sobre cómo ejecutar el frontend, consulta el [README del frontend](./frontend/README.md).
+
+1. Navegar a la carpeta frontend:
+   ```bash
+   cd frontend
+   ```
+
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Ejecutar en desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+La aplicación estará disponible en `http://localhost:5173`
+
+## Endpoints Principales
+
+- `GET /` - Verificación de estado
+- `GET /analytics/casos-por-estado` - Casos por estado procesal
+- `GET /analytics/jueces-mayor-demora` - Jueces con mayor demora promedio
+- `GET /analytics/causas-iniciadas-por-ano` - Evolución temporal de causas
+- `GET /analytics/delitos-mas-frecuentes` - Delitos más frecuentes
+- `GET /analytics/causas-en-tramite-por-juzgado` - Causas en trámite por juzgado
+- `GET /analytics/duracion-instruccion` - Duración de instrucción de causas
+- `GET /analytics/causas-por-fuero` - Causas por fuero judicial
+- `GET /analytics/causas-por-fiscal` - Causas por fiscal
+- `GET /analytics/personas-mas-denunciadas` - Personas más denunciadas
+- `GET /analytics/personas-que-mas-denunciaron` - Personas que más denunciaron
+- `GET /exportacion/descargar-base-de-datos` - Descargar base de datos completa
 

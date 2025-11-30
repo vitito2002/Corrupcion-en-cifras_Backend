@@ -45,3 +45,5 @@ def get_causas_por_fiscal(
     
     return service.get_datos_grafico(limit=limit)
 
+
+

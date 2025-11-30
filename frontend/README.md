@@ -2,15 +2,22 @@
 
 Frontend del proyecto "Corrupción en Cifras" desarrollado con React, TypeScript, Vite y TailwindCSS.
 
-## 🚀 Inicio Rápido
+## Descripción
 
-### Instalación
+Aplicación web de visualización de datos sobre casos de corrupción en Argentina. Proporciona dashboards interactivos con gráficos y análisis de datos.
+
+## Requisitos
+
+- Node.js 18+
+- npm o yarn
+
+## Instalación
 
 ```bash
 npm install
 ```
 
-### Desarrollo
+## Desarrollo
 
 ```bash
 npm run dev
@@ -18,23 +25,25 @@ npm run dev
 
 La aplicación estará disponible en `http://localhost:5173`
 
-### Build para Producción
+## Build para Producción
 
 ```bash
 npm run build
 ```
 
-### Preview de Producción
+## Preview de Producción
 
 ```bash
 npm run preview
 ```
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 src/
 ├── components/     # Componentes reutilizables
+│   ├── analytics/  # Componentes de visualización
+│   └── ui/         # Componentes de interfaz
 ├── pages/          # Páginas de la aplicación
 ├── services/       # Servicios API y lógica de negocio
 ├── types/          # Definiciones de tipos TypeScript
@@ -43,15 +52,16 @@ src/
 └── context/        # Context API de React
 ```
 
-## 🛠️ Tecnologías
+## Tecnologías
 
-- **React 19** - Biblioteca de UI
-- **TypeScript** - Tipado estático
-- **Vite** - Build tool y dev server
-- **TailwindCSS** - Framework CSS utility-first
-- **React Router DOM** - Enrutamiento
+- React 19 - Biblioteca de UI
+- TypeScript - Tipado estático
+- Vite - Build tool y dev server
+- TailwindCSS - Framework CSS utility-first
+- React Router DOM - Enrutamiento
+- Chart.js - Visualización de gráficos
 
-## 📡 API
+## API
 
 El servicio API está configurado para conectarse al backend en `http://localhost:8000`.
 
@@ -60,18 +70,17 @@ El servicio API está configurado para conectarse al backend en `http://localhos
 ```typescript
 import { get } from '@/services/api';
 
-// Ejemplo de uso
 const response = await get('/analytics/casos-por-estado');
 if (response.data) {
   // Procesar datos
 }
 ```
 
-## 🎨 Estilos
+## Estilos
 
 El proyecto usa TailwindCSS con las fuentes Inter y Roboto. Los estilos base están configurados en `src/index.css`.
 
-## 📝 Paths Absolutos
+## Paths Absolutos
 
 El proyecto está configurado para usar paths absolutos:
 
@@ -83,8 +92,8 @@ El proyecto está configurado para usar paths absolutos:
 - `@/router` → `src/router`
 - `@/context` → `src/context`
 
-## 🔧 Configuración
+## Configuración
 
-- **TypeScript**: Configurado en `tsconfig.app.json`
-- **Vite**: Configurado en `vite.config.ts`
-- **TailwindCSS**: Configurado en `tailwind.config.js`
+- TypeScript: Configurado en `tsconfig.app.json`
+- Vite: Configurado en `vite.config.ts`
+- TailwindCSS: Configurado en `tailwind.config.js`

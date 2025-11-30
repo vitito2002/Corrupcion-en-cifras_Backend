@@ -35,11 +35,8 @@ class DelitosMasFrecuentesService:
         Returns:
             Nombre del delito sin paréntesis ni su contenido
         """
-        # Primero eliminar paréntesis cerrados y su contenido: (ART.248)
         nombre_limpio = re.sub(r'\([^)]*\)', '', nombre)
-        # Luego eliminar paréntesis sin cerrar y todo lo que sigue: (ART 268
         nombre_limpio = re.sub(r'\([^)]*$', '', nombre_limpio)
-        # Limpiar espacios múltiples y espacios al inicio/final
         nombre_limpio = ' '.join(nombre_limpio.split())
         return nombre_limpio.strip()
     

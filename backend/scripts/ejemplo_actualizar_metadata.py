@@ -26,3 +26,5 @@ def actualizar_metadata_ultima_actualizacion(conn):
         print(f"⚠️ Advertencia: No se pudo actualizar metadata: {e}")
         # No lanzamos excepción para no interrumpir el proceso si falla esto
 
+
+

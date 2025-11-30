@@ -31,7 +31,6 @@ export async function apiRequest<T>(
     
     return { data };
   } catch (error) {
-    console.error('API request failed:', error);
     return {
       error: error instanceof Error ? error.message : 'Unknown error occurred',
     };
