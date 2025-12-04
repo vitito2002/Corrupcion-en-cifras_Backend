@@ -1,27 +1,52 @@
 services:
-  db:
-    image: postgres:15
-    container_name: corrupcion_db
-    restart: always
-    env_file: .env
-    ports:
-      - "5434:5434"
-    volumes:
-      - pg_data:/var/lib/postgresql/data
+  # Base de datos PostgreSQL
+  # COMENTADO: Usando la base de datos de la pipeline existente
+  # Si necesitas una base de datos local, descomenta este servicio
+  # y comenta la red 'corrupcion_network' en el servicio api
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: corrupcion_db_backend
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB:-corrupcion_db}
+  #     POSTGRES_USER: ${POSTGRES_USER:-admin}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-td8corrupcion}
+  #     POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=es_AR.UTF-8 --lc-ctype=es_AR.UTF-8"
+  #   ports:
+  #     - "${POSTGRES_PORT:-5433}:5432"
+  #   volumes:
+  #     - pg_data:/var/lib/postgresql/data
+  #     - ./initdb:/docker-entrypoint-initdb.d
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U admin -d corrupcion_db"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - backend_network
 
+  # API FastAPI
   api:
     build: .
     container_name: corrupcion_api
-    restart: always
-    depends_on:
-      - db
+    restart: unless-stopped
+    # depends_on eliminado: ya no depende de db local, se conecta a la pipeline
     env_file: .env
     ports:
-      - "8001:8000"
+      - "${API_PORT:-8000}:8000"
     volumes:
       - .:/app
+    networks:
+      - backend_network
+      - corrupcionencifras-pipeline_corrupcion_network  # Conectado a la red de la pipeline
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
 volumes:
   pg_data:
+
+networks:
+  backend_network:
+    driver: bridge
+  corrupcionencifras-pipeline_corrupcion_network:
+    external: true  # Usa la red existente de la pipeline
 

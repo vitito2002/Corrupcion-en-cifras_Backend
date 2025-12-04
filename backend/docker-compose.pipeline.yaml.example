@@ -1,0 +1,23 @@
+# docker-compose.pipeline.yaml
+# Este archivo muestra cómo configurar el backend para conectarse
+# a la base de datos de la pipeline existente.
+#
+# Para usarlo, cópialo como docker-compose.override.yaml o úsalo con:
+# docker compose -f docker-compose.yaml -f docker-compose.pipeline.yaml up
+
+services:
+  # Comentar o eliminar el servicio db ya que usaremos el de la pipeline
+  # db:
+  #   ...
+
+  api:
+    depends_on: []  # No depende de db local
+    networks:
+      - backend_network
+      - corrupcion_network  # Conectarse a la red de la pipeline
+
+networks:
+  backend_network:
+    driver: bridge
+  corrupcion_network:
+    external: true  # Usar la red existente de la pipeline
